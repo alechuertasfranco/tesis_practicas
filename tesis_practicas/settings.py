@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 from django.contrib import messages
 from django.contrib.messages import constants as message_constants
 
@@ -61,7 +62,10 @@ ROOT_URLCONF = 'tesis_practicas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['D:/Documentos/CICLO_VII/INGENIERIA DE SOFTWARE/Proyecto_Lab/tesis_practicas/tesis_practicas/template',
+                 'D:/Documentos/CICLO_VII/INGENIERIA DE SOFTWARE/Proyecto_Lab/tesis_practicas/gestionTesis/template',
+                 'D:/Documentos/CICLO_VII/INGENIERIA DE SOFTWARE/Proyecto_Lab/tesis_practicas/gestionPracticas/template',
+                 'D:/Documentos/CICLO_VII/INGENIERIA DE SOFTWARE/Proyecto_Lab/tesis_practicas/gestionSeguridad/template', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,6 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'tesis_practicas/static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
