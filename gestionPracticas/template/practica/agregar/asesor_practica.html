@@ -1,0 +1,67 @@
+{% extends "plantilla.html" %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    <div class="container">
+        <div class="card card-info mx-4 my-4">
+            <div class="card-header"> 
+                <h1 class="card-title">REGISTAR ASESOR</h1> 
+            </div>
+            <div class="card-body"> 
+                <div class="row">
+                    <form enctype="multipart/form-data" >
+                        <div class="form-group col">
+                            <label>Asesores</label>
+                            <select class="form-control select2" style="width: 100%;">
+                                <option value="" selected="selected"
+                                    disabled="disabled">Seleccione un Asesor</option>
+                                <option>Ing. Robert Jerry Sanchez Ticona</option>
+                                <option>Ing. Juan Pedro Santos Fernandez</option>        
+                                <option >Ing. Luis Boy Chavil</option>
+                                <option >Ing. Marcelino Torres Villanueva</option>
+                                <option>Ing. Jose Alverto Gomez Avila</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button style="color:white" class="btn btn-warning">Seleccionar</button> 
+            </div>
+        </div>
+        <div class="card card-info mx-4 my-4">
+            <div class="card-header"> 
+                <h1 class="card-title">INFORMACIÓN DEL ASESOR</h1> 
+            </div>
+            <div class="card-body"> 
+                <div class="row">
+                    <form enctype="multipart/form-data" >
+                        <div class="col-4">
+                            <label>Nombres</label>
+                            <input type="text" class="form-control" readonly value="ROBERT JERRY">
+                        </div>
+                        <div class="col-5">
+                            <label>Apellidos</label>
+                            <input type="text" class="form-control" readonly value="SÁNCHEZ TICONA">
+                        </div>
+                        <div class="col-5">
+                            <label>Profesion</label>
+                            <input type="text" class="form-control" readonly value="INGENIERO DE COMPUTACIÓN Y SISTEMA">
+                        </div>
+                        <div class="col-5">
+                            <label>Teléfono</label>
+                            <input type="text" class="form-control" value="99xxxxxx">
+                        </div>
+                        <div class="col-3">
+                            <label>Correo Electrónico</label>
+                            <input type="text" class="form-control"  value="rsanchezt@unitru.edu.pe">
+                        </div>
+
+                    </form>    
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i> Guardar</a>
+            </div>
+        </div>
+    </div>
+{% endblock%}

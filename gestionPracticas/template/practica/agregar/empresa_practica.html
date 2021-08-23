@@ -1,0 +1,60 @@
+{% extends "plantilla.html" %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    <div class="container">
+        <div class="card card-info mx-4 my-4">
+            <div class="card-header"> 
+                <h1 class="card-title">INFORMACION GENERAL DEL CAMPO DE PRACTICA</h1> 
+            </div>
+            <div class="card-body"> 
+                <div class="row">
+                    <form enctype="multipart/form-data" >
+                        <div class="col-3">
+                            <label>Razón Social</label>
+                            <input type="text" class="form-control" value="EMC SERVICIOS" >
+                        </div>
+                        <div class="col-4">
+                            <label>Nit</label>
+                            <input type="text" class="form-control" value="17648437-9">
+                        </div>
+                        <div class="col-5">
+                            <label>Teléfono</label>
+                            <input type="text" class="form-control" value="7386048">
+                        </div>
+                        <div class="col-3">
+                            <label>Dirección</label>
+                            <input type="text" class="form-control" value="CRA 4 22-33">
+                        </div>
+                        <div class="col-3">
+                            <label>Ciudad</label>
+                            <input type="text" class="form-control"  value="Trujillo">
+                        </div>
+                        <div class="col-3">
+                            <label>Nombre del Gerente</label>
+                            <input type="text" class="form-control"  value="ELkin Antonio Monsalve Castaño">
+                        </div>
+                        <div class="col-3">
+                            <label>Nombre del Jefe Inmediato</label>
+                            <input type="text" class="form-control"  value="ELkin Antonio Monsalve Castaño">
+                        </div>
+                        <div class="col-3">
+                            <label>Cargo</label>
+                            <input type="text" class="form-control"  value="Gerente">
+                        </div>
+                        <div class="col-3">
+                            <label>Telefono</label>
+                            <input type="text" class="form-control"  value="973515536">
+                        </div>
+                        <div class="col-3">
+                            <label>Correo Electrónico</label>
+                            <input type="text" class="form-control"  value="emc.servicios@hotmail.com">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i> Siguiente</a>
+            </div>
+        </div>
+    </div>
+{% endblock%}

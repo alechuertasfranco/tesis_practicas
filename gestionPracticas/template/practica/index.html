@@ -1,0 +1,55 @@
+{% extends "plantilla.html" %}
+{% block content %}
+   <div class="container">
+       <div class="car card-outline card-info mt-3">
+           <div class="card-header">
+               <h1 class="card-title">ESTADO DE PRACTICA</h1>
+           </div>
+        <div class="card-body">
+            <div class="row"> 
+                <div class="col-md-6 pull-right">
+                    <form action="" method="GET" >      
+                        <div class="input-group">
+                            <input type="text" name="buscar" id="buscar" class="form-control" autofocus placeholder="Buscar" value="">
+                            <span class="input-group-btn">
+                            <button class="btn btn-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            </span>
+                            <a href="" class="btn btn-sm btn-success btn-add"><i class="fas fa-file-excel"></i> Exportar</a>
+                        </div>
+                    </form>
+                    
+                </div> 
+                <div class="col-md-5 pull-right">   
+                </div>
+                <div class="col-md-1 pull-right">
+                    <a href="" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i> NUEVO</a>
+                </div>
+            </div>
+          
+
+            <table class="table mt-2">
+                <table id="tablacategorias" class="table table-stripad mt-4" style="width: 100%;">
+                    <thead class="bg-info test.white">
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th><center>Opciones</center></th>
+                            <th>Imagen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+                </table>
+            </table>
+        </div>
+
+        </div>
+   </div>
+{% endblock %}
