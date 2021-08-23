@@ -62,10 +62,10 @@ ROOT_URLCONF = 'tesis_practicas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['D:/Documentos/CICLO_VII/INGENIERIA DE SOFTWARE/Proyecto_Lab/tesis_practicas/tesis_practicas/template',
-                 'D:/Documentos/CICLO_VII/INGENIERIA DE SOFTWARE/Proyecto_Lab/tesis_practicas/gestionTesis/template',
-                 'D:/Documentos/CICLO_VII/INGENIERIA DE SOFTWARE/Proyecto_Lab/tesis_practicas/gestionPracticas/template',
-                 'D:/Documentos/CICLO_VII/INGENIERIA DE SOFTWARE/Proyecto_Lab/tesis_practicas/gestionSeguridad/template', ],
+        'DIRS': ['D:/PROYECTOS CICLO VII/Python/tesis_practicas/tesis_practicas/template',
+                 'D:/PROYECTOS CICLO VII/Python/tesis_practicas/tesis_practicas/gestionTesis/template',
+                 'D:/PROYECTOS CICLO VII/Python/tesis_practicas/tesis_practicas/gestionPracticas/template',
+                 'D:/PROYECTOS CICLO VII/Python/tesis_practicas/tesis_practicas/gestionSeguridad/template', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'db_tesis_practicas',
         'USER':'postgres',
-        'PASSWORD':'1234',
+        'PASSWORD':'password',
         'HOST':'127.0.0.1',
         'DATABASE_PORT':'5432',
     }
