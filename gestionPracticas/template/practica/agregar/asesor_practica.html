@@ -25,10 +25,10 @@
                 </form>
             </div>
             <div class="card-footer">
-                <button style="color:white" class="btn btn-warning">Seleccionar</button> 
+                <button onclick="aparecer()" style="color:white" class="btn btn-warning">Seleccionar</button> 
             </div>
         </div>
-        <div class="card card-info mx-4 my-4">
+        <div class="card card-info mx-4 my-4" id="info-asesor" style="display: none;">
             <div class="card-header"> 
                 <h1 class="card-title">INFORMACIÓN DEL ASESOR</h1> 
             </div>
@@ -65,3 +65,19 @@
         </div>
     </div>
 {% endblock%}
+
+{% block js %}
+<SCRIPT type="text/javascript">
+   function aparecer() {
+    var x = document.getElementById("info-asesor");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+
+</SCRIPT>
+
+
+{% endblock js %}
