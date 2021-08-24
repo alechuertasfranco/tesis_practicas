@@ -1,0 +1,157 @@
+{% extends "plantilla.html" %}
+{% block tittle %} Alumnos {% endblock %}
+{% block menu %} active {% endblock %}
+{% block menu2 %} menu-open {% endblock %}
+{% block lis %} active {% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card card-outline card-info mt-3">
+    <div class="card-header">
+        <div class="row justify-content-between">
+            <div class="col-4">
+                <h3 class="card-title">Mantenedor de alumnos</h3>
+              </div>
+              <div class="col-1">
+              <a
+                href="#"
+                class="btn btn-sm btn-primary btn-add "
+                ><i class="fas fa-plus"></i> NUEVO</a
+              >
+              </div>
+        </div>      
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6 pull-right">
+          <form action="" method="GET">
+            <div class="input-group">
+              <input
+                type="text"
+                name="buscar"
+                id="buscar"
+                class="form-control"
+                autofocus
+                placeholder="Buscar"
+                value=""/>
+              <span class="input-group-btn">
+                <button class="btn btn-primary">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+      <table class="table mt-2">
+        <table
+          id="tablasubfamilias"
+          class="table table-striped mt-4"
+          style="width: 100%"
+        >
+          <thead class="bg-info text-white">
+            <tr>
+              <th>Codigo</th>
+              <th>Nombre</th>
+              <th>Apellidos</th>
+              <th>email</th>
+              <th>DNI</th>
+              <th><center>OPCIONES</center></th>
+            </tr>
+          </thead>
+          <tr>
+              <td>001</td>
+              <td>Enrique</td>
+              <td>Bustio Tocalanza</td>
+              <td>enriqueb@unitru.edu.pe</td>
+              <td>67234652</td>
+              <td style="text-align: center">
+                <a href="#" class="btn btn-info btn-sm">
+                  <i class="fa fa-edit"></i> Editar</a>
+                  <a href="#" onclick="eliminarProducto('{{itemproducto.id}}','{{itemproducto.descripcion}}')" 
+                  class="btn btn-danger btn-sm">
+                  <i class="fa fa-trash"></i> Eliminar</a>
+             </td> 
+          </tr>
+          <tr>
+            <td>002</td>
+            <td>Ruk</td>
+            <td>Lujo Valluerca</td>
+            <td>rukl@unitru.edu.pe</td>
+            <td>57224652</td>
+            <td style="text-align: center">
+                <a href="#" class="btn btn-info btn-sm">
+                  <i class="fa fa-edit"></i> Editar</a>
+                  <a href="#" onclick="eliminarProducto('{{itemproducto.id}}','{{itemproducto.descripcion}}')" 
+                  class="btn btn-danger btn-sm">
+                  <i class="fa fa-trash"></i> Eliminar</a>
+             </td> 
+          </tr>
+          <tr>
+            <td>003</td>
+            <td>Fabiana</td>
+            <td>Silveira Cabero</td>
+            <td>fabianas@unitru.edu.pe</td>
+            <td>37232652</td>
+            <td style="text-align: center">
+                <a href="#" class="btn btn-info btn-sm">
+                  <i class="fa fa-edit"></i> Editar</a>
+                  <a href="#" onclick="eliminarProducto('{{itemproducto.id}}','{{itemproducto.descripcion}}')" 
+                  class="btn btn-danger btn-sm">
+                  <i class="fa fa-trash"></i> Eliminar</a>
+             </td> 
+          </tr>  
+          <tr>
+            <td>004</td>
+            <td>Marielisse</td>
+            <td>Llana Pis</td>
+            <td>marielissel@unitru.edu.pe</td>
+            <td>23242652</td>
+            <td style="text-align: center">
+                <a href="#" class="btn btn-info btn-sm">
+                  <i class="fa fa-edit"></i> Editar</a>
+                  <a href="#" onclick="eliminarProducto('{{itemproducto.id}}','{{itemproducto.descripcion}}')" 
+                  class="btn btn-danger btn-sm">
+                  <i class="fa fa-trash"></i> Eliminar</a>
+             </td> 
+          </tr>  
+</table> 
+</div>
+</div> 
+</div>
+</div> 
+{% endblock %}
+
+{% block js %} 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+
+{% if messages %} 
+  {% for m in messages %} 
+    <script> 
+      Swal.fire({ 
+        "title": "Eliminado",
+        "text":"{{m}}", 
+        "icon":"success" 
+      }) 
+    </script> 
+  {% endfor %} 
+{% endif %}
+
+<script> 
+function eliminarProducto(id,descripcion){ 
+  Swal.fire({ 
+    "title":"¿Realmente desea eliminar Registro?", 
+    "text":"Codigo :"+ id + " Descripción :" + descripcion, 
+    "icon":"question", "showCancelButton":true, 
+    "cancelButtonText":"No", 
+    "confirmButtonText":"Si", 
+    "reverseButton":true,
+    "confirmButtonColor":"#dc3545" 
+  }).then(function(result){ 
+        if(result.isConfirmed){ 
+          window.location.href="/eliminarproducto/"+id+"/" 
+        } 
+      }) 
+    } 
+</script> 
+
+{% endblock %}
