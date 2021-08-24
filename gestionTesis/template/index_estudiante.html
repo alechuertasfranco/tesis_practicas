@@ -1,27 +1,31 @@
-{% extends "plantilla.html" %} {% load static %} {% block css %}
+{% extends "plantilla.html" %} {% load static %}
+{% block estudiante_link %} active {% endblock %}
+{% block estudiante_item %} menu-open {% endblock %}
+{% block estudiante %} active {% endblock %}
+{% block css %}
 <!-- daterange picker -->
 <link rel="stylesheet" href="{% static '/lte/plugins/daterangepicker/daterangepicker.css' %}"/>
 {% endblock css %}
 {% block num_messages %}1{% endblock num_messages %}
 {% block messages %}
-<!-- Messages Dropdown Menu -->
-<a href="#" class="dropdown-item">
-  <!-- Message Start -->
-  <div class="media">
-    <img src="{% static '/lte/dist/img/AdminLTELogo.png' %}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-    <div class="media-body">
-      <h3 class="dropdown-item-title">
-        Sistema
-        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-      </h3>
-      <p class="text-sm">AVISO: Tiene 3 días para subir su proyecto</p>
-      <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> Hace 1 hora</p>
+  <!-- Messages Dropdown Menu -->
+  <a href="#" class="dropdown-item">
+    <!-- Message Start -->
+    <div class="media">
+      <img src="{% static '/lte/dist/img/AdminLTELogo.png' %}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+      <div class="media-body">
+        <h3 class="dropdown-item-title">
+          Sistema
+          <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+        </h3>
+        <p class="text-sm">AVISO: Tiene 3 días para subir su proyecto</p>
+        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> Hace 1 hora</p>
+      </div>
     </div>
-  </div>
-  <!-- Message End -->
-</a>
-<div class="dropdown-divider"></div>
-<a href="#" class="dropdown-item dropdown-footer">Ver todos los mensajes</a>
+    <!-- Message End -->
+  </a>
+  <div class="dropdown-divider"></div>
+  <a href="#" class="dropdown-item dropdown-footer">Ver todos los mensajes</a>
 {% endblock messages %}
 {% block num_notifications %}1{% endblock num_notifications %}
 {% block notifications %}

@@ -243,6 +243,63 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item {% block estudiante_item %}{% endblock estudiante_item %}">
+            <a href="#" class="nav-link {% block estudiante_link %}{% endblock estudiante_link %}">
+              <i class="nav-icon fas fa-user-graduate"></i>
+              <p>
+                Estudiante
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/tesis_estudiante_error" class="nav-link {% block estudiante_error %}{% endblock estudiante_error %}">
+                  <i class="fas fa-ban nav-icon"></i>
+                  <p>Inicio denegado</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/tesis_estudiante" class="nav-link {% block estudiante %}{% endblock estudiante %}">
+                  <i class="fas fa-microscope nav-icon"></i>
+                  <p>Inicio</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item {% block jurado_item %}{% endblock jurado_item %}">
+            <a href="#" class="nav-link {% block jurado_link %}{% endblock jurado_link %}">
+              <i class="nav-icon fas fa-chalkboard-teacher"></i>
+              <p>
+                Jurado
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/tesis_jurado" class="nav-link {% block jurado_inicio %}{% endblock jurado_inicio %}">
+                  <i class="fas fa-tasks fa-fax"></i>
+                  <p>Inicio</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item {% block secretaria_item %}{% endblock secretaria_item %}">
+            <a href="#" class="nav-link {% block secretaria_link %}{% endblock secretaria_link %}">
+              <i class="nav-icon fas fa-fax"></i>
+              <p>
+                Secretaria
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/tesis_secretaria" class="nav-link {% block secretaria_inicio %}{% endblock secretaria_inicio %}">
+                  <i class="fas fa-tasks nav-icon"></i>
+                  <p>Inicio</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

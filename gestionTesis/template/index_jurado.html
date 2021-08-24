@@ -1,4 +1,8 @@
-{% extends "plantilla.html" %} {% load static%} {% block css %}
+{% extends "plantilla.html" %} {% load static%}
+{% block jurado_link %} active {% endblock %}
+{% block jurado_item %} menu-open {% endblock %}
+{% block jurado_inicio %} active {% endblock %}
+{% block css %}
 <!-- daterange picker -->
 <link rel="stylesheet" href="{% static '/lte/plugins/daterangepicker/daterangepicker.css' %}"/>
 {% endblock css %}
