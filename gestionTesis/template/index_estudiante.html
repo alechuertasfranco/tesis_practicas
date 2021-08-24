@@ -1,0 +1,241 @@
+{% extends "plantilla.html" %} {% load static %} {% block css %}
+<!-- daterange picker -->
+<link rel="stylesheet" href="{% static '/lte/plugins/daterangepicker/daterangepicker.css' %}"/>
+{% endblock css %}
+{% block num_messages %}1{% endblock num_messages %}
+{% block messages %}
+<!-- Messages Dropdown Menu -->
+<a href="#" class="dropdown-item">
+  <!-- Message Start -->
+  <div class="media">
+    <img src="{% static '/lte/dist/img/AdminLTELogo.png' %}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+    <div class="media-body">
+      <h3 class="dropdown-item-title">
+        Sistema
+        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+      </h3>
+      <p class="text-sm">AVISO: Tiene 3 días para subir su proyecto</p>
+      <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> Hace 1 hora</p>
+    </div>
+  </div>
+  <!-- Message End -->
+</a>
+<div class="dropdown-divider"></div>
+<a href="#" class="dropdown-item dropdown-footer">Ver todos los mensajes</a>
+{% endblock messages %}
+{% block num_notifications %}1{% endblock num_notifications %}
+{% block notifications %}
+<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+  <span class="dropdown-item dropdown-header">1 Notificación</span>
+  <div class="dropdown-divider"></div>
+  <a href="#" class="dropdown-item">
+    <i class="fas fa-envelope mr-2"></i> 1 new messages
+    <span class="float-right text-muted text-sm">1 hora</span>
+  </a>
+  <div class="dropdown-divider"></div>
+  <a href="#" class="dropdown-item dropdown-footer">Ver todas las notificaciones</a>
+</div>
+{% endblock notifications %}
+{% block content %}
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="pl-3">Plan de tesis</h1>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Plan de tesis</li>
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Datos generales</h3>
+        <div class="card-tools">
+          <a href="#" onclick="edit()" type="button" class="btn btn-tool">
+            <i class="fas fa-edit"></i>
+          </a>
+        </div>
+      </div>
+      <div class="card-body">
+        <form>
+          <!-- Asesor -->
+          <div class="form-group">
+            <label for="asesor">Asesor</label>
+            <select class="form-control" id="asesor" disabled>
+              <option>Robert Sanchez Ticona</option>
+              <option>Juan Santos Fernandez</option>
+              <option>Marcelino Torres Villanueva</option>
+              <option>Luis Tenorio Cabrera</option>
+              <option>Luis Boy Chavil</option>
+            </select>
+          </div>
+          <!-- Fecha entrega -->
+          <div class="form-group">
+            <label>Fecha de entrega:</label>
+            <div class="input-group date"data-target-input="nearest">
+              <input id="fecha_entrega" type="date" class="form-control" value="2021-08-21" disabled/>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <i class="fa fa-calendar"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Documento tesis -->
+          <div class="form-group">
+            <label for="documento">Documento</label>
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="documento" disabled/>
+                <label class="custom-file-label" for="documento">Documento de tesis.pdf</label>
+              </div>
+            </div>
+          </div>
+          <!-- Fecha sustentación -->
+          <div class="form-group">
+            <label>Fecha de sustentación:</label>
+            <div class="input-group date"data-target-input="nearest">
+              <input id="fecha_sustentacion" type="date" class="form-control" disabled/>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <i class="fa fa-calendar"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-muted row">
+        <div class="col">Hace 3 días</div>
+        <div class="col text-right"><button type="button" class="btn-sm btn-success"><i class="fas fa-upload mr-2"></i>Levantar observaciones</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Observaciones</h3>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="form-group">
+            <div class="row ml-1"><h5><b>Jurado 1</b></h5></div>
+            <div class="form-row">
+              <div class="col">
+                <label for="observation1">Observación</label>
+                <textarea class="form-control" id="observation1" rows="3">{% lorem 1 b random %}</textarea>
+              </div>
+            </div>   
+            <div class="row mt-2">
+              <div class="col-6">
+                <label>Estado</label>
+                <div class="alert alert-danger">
+                  <i class="icon fas fa-ban"></i>Por corregir
+                </div>
+              </div>
+              <div class="col-6">
+                <label>Documento</label>
+                <button type="button" class="btn btn-block btn-info alert"><i class="fas fa-download mr-2"></i>Descargar documento observado</button>
+              </div>
+            </div>
+          </div><hr/>
+          <div class="form-group">
+            <div class="row ml-1"><h5><b>Jurado 2</b></h5></div>
+            <div class="form-row" hidden>
+              <div class="col">
+                <label for="observation2">Observación</label>
+                <textarea class="form-control" id="observation2" rows="3"></textarea>
+              </div>
+            </div>   
+            <div class="row mt-2">
+              <div class="col-6">
+                <label>Estado</label>
+                <div class="alert alert-success">
+                  <i class="icon fas fa-check"></i>Aprobado
+                </div>
+              </div>
+              <div class="col-6">
+                <label>Documento</label>
+                <button type="button" class="btn btn-block btn-info alert" disabled><i class="fas fa-download mr-2"></i>Descargar documento observado</button>
+              </div>
+            </div>
+          </div><hr/>
+          <div class="form-group">
+            <div class="row ml-1"><h5><b>Jurado 3</b></h5></div>
+            <div class="form-row" hidden>
+              <div class="col">
+                <label for="observation3">Observación</label>
+                <textarea class="form-control" id="observation3" rows="3"></textarea>
+              </div>
+            </div>   
+            <div class="row mt-2">
+              <div class="col-6">
+                <label>Estado</label>
+                <div class="alert alert-success">
+                  <i class="icon fas fa-check"></i>Aprobado
+                </div>
+              </div>
+              <div class="col-6">
+                <label>Documento</label>
+                <button type="button" class="btn btn-block btn-info alert" disabled><i class="fas fa-download mr-2"></i>Descargar documento observado</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+
+{% endblock %} {% block js %}
+<!-- date-range-picker -->
+<script src="{% static '/lte/plugins/daterangepicker/daterangepicker.js' %}"></script>
+<script>
+  function edit() {
+    let txt_documento = document.getElementById('documento')
+    txt_documento.removeAttribute('disabled')
+  }
+
+  function modalPracticas(){
+    Swal.fire({
+      "title": "Acceso denegado",
+      "text": "Debe completar el total de horas de practicas para tener acceso al plan de proyecto de tesis.",
+      "icon": "error",
+    })
+    .then(function(){
+      window.location.href="/"
+    })
+  }
+</script>
+
+{% if modal %}
+<script>
+  console.log("MODAL")
+  window.onload = modalPracticas()
+</script>
+{% endif %}
+{% endblock js %}
