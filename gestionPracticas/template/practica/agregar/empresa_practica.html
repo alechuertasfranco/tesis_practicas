@@ -7,53 +7,54 @@
                 <h1 class="card-title">INFORMACION GENERAL DEL CAMPO DE PRACTICA</h1> 
             </div>
             <div class="card-body"> 
-                <div class="row">
-                    <form enctype="multipart/form-data" >
-                        <div class="col-3">
+                <form enctype="multipart/form-data" >
+                    <div class="row">
+                        <div class="col-10 form-group">
                             <label>Razón Social</label>
                             <input type="text" class="form-control" value="EMC SERVICIOS" >
                         </div>
-                        <div class="col-4">
-                            <label>Nit</label>
-                            <input type="text" class="form-control" value="17648437-9">
+                        <div class="col-2 form-group">
+                            <label>RUC</label>
+                            <input type="text" class="form-control" value="20538856674">
                         </div>
-                        <div class="col-5">
+                        <div class="col-2 form-group">
                             <label>Teléfono</label>
                             <input type="text" class="form-control" value="7386048">
                         </div>
-                        <div class="col-3">
+                        <div class="col-3 form-group">
                             <label>Dirección</label>
                             <input type="text" class="form-control" value="CRA 4 22-33">
                         </div>
-                        <div class="col-3">
+                        <div class="col-2 form-group">
                             <label>Ciudad</label>
                             <input type="text" class="form-control"  value="Trujillo">
                         </div>
-                        <div class="col-3">
+                        <div class="col-5 form-group">
                             <label>Nombre del Gerente</label>
-                            <input type="text" class="form-control"  value="ELkin Antonio Monsalve Castaño">
+                            <input type="text" class="form-control"  value="Luis Antonio Sanchez Rosales">
                         </div>
-                        <div class="col-3">
+                        <div class="col-3 form-group">
                             <label>Nombre del Jefe Inmediato</label>
                             <input type="text" class="form-control"  value="ELkin Antonio Monsalve Castaño">
                         </div>
-                        <div class="col-3">
+                        <div class="col-3 form-group">
                             <label>Cargo</label>
                             <input type="text" class="form-control"  value="Gerente">
                         </div>
-                        <div class="col-3">
+                        <div class="col-3 form-group">
                             <label>Telefono</label>
                             <input type="text" class="form-control"  value="973515536">
                         </div>
-                        <div class="col-3">
+                        <div class="col-3 form-group">
                             <label>Correo Electrónico</label>
                             <input type="text" class="form-control"  value="emc.servicios@hotmail.com">
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
             <div class="card-footer">
-                <a href="" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i> Siguiente</a>
+                <a href="{% url 'listarPractica' %}" class='btn btn-sm btn-danger btn-add'><i class=''></i> Cancelar</a>
+                <a href="{% url 'agregarAsesor' %}" class='btn btn-sm btn-primary btn-add'><i class=''></i> Siguiente</a>
             </div>
         </div>
     </div>

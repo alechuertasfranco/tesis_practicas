@@ -6,10 +6,10 @@
             <div class="card-header"> 
                 <h1 class="card-title">REGISTAR ASESOR</h1> 
             </div>
-            <div class="card-body"> 
+            <div class="card-body">
+                <form enctype="multipart/form-data" > 
                 <div class="row">
-                    <form enctype="multipart/form-data" >
-                        <div class="form-group col">
+                        <div class="form-group col-12">
                             <label>Asesores</label>
                             <select class="form-control select2" style="width: 100%;">
                                 <option value="" selected="selected"
@@ -21,8 +21,8 @@
                                 <option>Ing. Jose Alverto Gomez Avila</option>
                             </select>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
             <div class="card-footer">
                 <button style="color:white" class="btn btn-warning">Seleccionar</button> 
@@ -32,14 +32,14 @@
             <div class="card-header"> 
                 <h1 class="card-title">INFORMACIÓN DEL ASESOR</h1> 
             </div>
-            <div class="card-body"> 
+            <div class="card-body">
+                <form enctype="multipart/form-data" > 
                 <div class="row">
-                    <form enctype="multipart/form-data" >
-                        <div class="col-4">
+                        <div class="col-6">
                             <label>Nombres</label>
                             <input type="text" class="form-control" readonly value="ROBERT JERRY">
                         </div>
-                        <div class="col-5">
+                        <div class="col-6">
                             <label>Apellidos</label>
                             <input type="text" class="form-control" readonly value="SÁNCHEZ TICONA">
                         </div>
@@ -47,20 +47,20 @@
                             <label>Profesion</label>
                             <input type="text" class="form-control" readonly value="INGENIERO DE COMPUTACIÓN Y SISTEMA">
                         </div>
-                        <div class="col-5">
+                        <div class="col-3">
                             <label>Teléfono</label>
                             <input type="text" class="form-control" value="99xxxxxx">
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             <label>Correo Electrónico</label>
                             <input type="text" class="form-control"  value="rsanchezt@unitru.edu.pe">
-                        </div>
-
-                    </form>    
+                        </div>  
                 </div>
+            </form>  
             </div>
             <div class="card-footer">
-                <a href="" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i> Guardar</a>
+                <a href="{% url 'listarPractica' %}" class='btn btn-sm btn-danger btn-add'><i class=''></i> Cancelar</a>
+                <a href="{% url 'listarPractica_id' %}" class='btn btn-sm btn-success btn-add'><i class=''></i> Guardar</a>
             </div>
         </div>
     </div>

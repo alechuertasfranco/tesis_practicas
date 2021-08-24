@@ -12,3 +12,9 @@ def agregarAsesor(request):
 
 def listarPractica(request):
     return render(request,"practica/index.html")
+
+def listarPractica_id(request):
+    id='00145'
+    descripcion="EMC SERVICIOS-SÁNCHEZ TICONA-PRACTICA"
+    context={'id':id,'descripcion':descripcion}
+    return render(request,"practica/index.html",context)   
