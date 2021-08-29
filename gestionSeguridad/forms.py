@@ -1,19 +1,14 @@
 from django import forms 
 from django.forms import fields
-from .models import Alumno, Asesor,Jurado
+from .models import Alumno, Docente
 
 
 class AlumnoForm(forms.ModelForm):
     class Meta:
         model=Alumno    
-        fields='__all__'
+        fields=['nombre','apellidos','email','dni'] 
         
-class AsesorForm(forms.ModelForm):
+class DocenteForm(forms.ModelForm):
     class Meta:
-        model=Asesor   
-        fields='__all__'
-              
-class JuradoForm(forms.ModelForm):
-    class Meta:
-        model=Jurado    
-        fields='__all__'
+        model=Docente   
+        fields=['nombre','apellidos','email','dni'] 

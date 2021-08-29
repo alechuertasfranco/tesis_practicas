@@ -224,21 +224,15 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/alumnos" class="nav-link {% block lis %}{% endblock lis %}">
+                <a href="{% url 'listaralumno' %}" class="nav-link {% block lis %}{% endblock lis %}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Alumnos</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/asesores" class="nav-link {% block lia %}{% endblock lia %}">
+                <a href="{% url 'listardocente' %}" class="nav-link {% block lia %}{% endblock lia %}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Asesores</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/jurados" class="nav-link {% block lij %}{% endblock lij %}">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Jurados</p>
+                  <p>Docentes</p>
                 </a>
               </li>
             </ul>
