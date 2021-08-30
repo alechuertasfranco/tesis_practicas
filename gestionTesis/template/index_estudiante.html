@@ -2,6 +2,7 @@
 {% block estudiante_link %} active {% endblock %}
 {% block estudiante_item %} menu-open {% endblock %}
 {% block estudiante %} active {% endblock %}
+{% load crispy_forms_tags %} 
 {% block css %}
 <!-- daterange picker -->
 <link rel="stylesheet" href="{% static '/lte/plugins/daterangepicker/daterangepicker.css' %}"/>
@@ -76,53 +77,8 @@
         </div>
       </div>
       <div class="card-body">
-        <form>
-          <!-- Asesor -->
-          <div class="form-group">
-            <label for="asesor">Asesor</label>
-            <select class="form-control" id="asesor" disabled>
-              <option>Robert Sanchez Ticona</option>
-              <option>Juan Santos Fernandez</option>
-              <option>Marcelino Torres Villanueva</option>
-              <option>Luis Tenorio Cabrera</option>
-              <option>Luis Boy Chavil</option>
-            </select>
-          </div>
-          <!-- Fecha entrega -->
-          <div class="form-group">
-            <label>Fecha de entrega:</label>
-            <div class="input-group date"data-target-input="nearest">
-              <input id="fecha_entrega" type="date" class="form-control" value="2021-08-21" disabled/>
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <i class="fa fa-calendar"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Documento tesis -->
-          <div class="form-group">
-            <label for="documento">Documento</label>
-            <div class="input-group">
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" id="documento" disabled/>
-                <label class="custom-file-label" for="documento">Documento de tesis.pdf</label>
-              </div>
-            </div>
-          </div>
-          <!-- Fecha sustentación -->
-          <div class="form-group">
-            <label>Fecha de sustentación:</label>
-            <div class="input-group date"data-target-input="nearest">
-              <input id="fecha_sustentacion" type="date" class="form-control" disabled/>
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <i class="fa fa-calendar"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
+        {% csrf_token %} 
+        {{ form | crispy }} 
       </div>
       <div class="card-footer text-muted row">
         <div class="col">Hace 3 días</div>
