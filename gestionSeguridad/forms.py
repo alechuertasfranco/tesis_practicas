@@ -5,10 +5,10 @@ from .models import Alumno, Docente
 
 class AlumnoForm(forms.ModelForm):
     class Meta:
-        model=Alumno    
-        fields=['nombre','apellidos','email','dni'] 
+        model=Alumno
+        fields='__all__'
         
 class DocenteForm(forms.ModelForm):
     class Meta:
-        model=Docente   
-        fields=['nombre','apellidos','email','dni'] 
+        model=Docente
+        fields='__all__'

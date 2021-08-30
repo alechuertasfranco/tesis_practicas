@@ -3,9 +3,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from gestionSeguridad.models import Docente,Alumno
+from gestionSeguridad.models import Docente, Alumno
 from django.core.paginator import Paginator
-from .forms import AlumnoForm,DocenteForm
+from .forms import AlumnoForm, DocenteForm
 from django.http import Http404
 from django.db.models import Q
 
