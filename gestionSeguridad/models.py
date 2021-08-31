@@ -12,7 +12,7 @@ class Alumno(models.Model):
     ciclo_academico = models.CharField(max_length=4)
     estado = models.BooleanField(default=True)
     def __str__(self):
-        return self.nombres
+      return self.nombres +" "+ self.apellidos
 
 class Docente(models.Model):
     apellidos = models.CharField(max_length=40)
@@ -22,4 +22,4 @@ class Docente(models.Model):
     email = models.EmailField()
     estado = models.BooleanField(default=True)
     def __str__(self):
-        return self.nombres
+      return self.nombres +" "+ self.apellidos
