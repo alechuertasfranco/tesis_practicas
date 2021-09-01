@@ -9,7 +9,6 @@ def index_estudiante(request):
   logger = logging.getLogger(__name__)
   alumno = Alumno.objects.get(user=request.user.id)
   plan_tesis = PlanTesis.objects.filter(alumno=alumno.id)
-  logger.warn(plan_tesis)
   if plan_tesis:
     plan_tesis = PlanTesis.objects.get(alumno=alumno.id)
     form=PlanTesisFormEdit(instance=plan_tesis)

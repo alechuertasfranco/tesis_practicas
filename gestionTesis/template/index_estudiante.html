@@ -6,6 +6,7 @@
 {% block css %}
 <!-- daterange picker -->
 <link rel="stylesheet" href="{% static '/lte/plugins/daterangepicker/daterangepicker.css' %}"/>
+<link rel="stylesheet" href="{% static '/css/index_estudiante.css' %}"/>
 {% endblock css %}
 {% block num_messages %}1{% endblock num_messages %}
 {% block messages %}
@@ -184,23 +185,7 @@
 {% endblock %} {% block js %}
 <!-- date-range-picker -->
 <script src="{% static '/lte/plugins/daterangepicker/daterangepicker.js' %}"></script>
-<script>
-  function edit() {
-    let txt_documento = document.getElementById('documento')
-    txt_documento.removeAttribute('disabled')
-  }
-
-  function modalPracticas(){
-    Swal.fire({
-      "title": "Acceso denegado",
-      "text": "Debe completar el total de horas de practicas para tener acceso al plan de proyecto de tesis.",
-      "icon": "error",
-    })
-    .then(function(){
-      window.location.href="/"
-    })
-  }
-</script>
+<script src="{% static '/js/index_estudiante.js' %}"></script>
 
 {% if modal %}
 <script>

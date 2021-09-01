@@ -17,9 +17,7 @@ class PlanTesisFormEdit(ModelForm):
         model=PlanTesis
         fields=['asesor','fecha_presentacion','fecha_sustentacion','proyecto_tesis', 'informe_final']
         widgets = {
-            'asesor': Select(attrs={'readonly':'true'}),
+            'asesor': Select(attrs={'disabled':'true'}),
             'fecha_presentacion': TextInput(attrs={'type': 'date','readonly':'true'}),
             'fecha_sustentacion': TextInput(attrs={'type': 'date','readonly':'true'}),
-            'proyecto_tesis': FileInput(attrs={'readonly':'true'}),
-            'informe_final': FileInput(attrs={'readonly':'true'}),
         }
