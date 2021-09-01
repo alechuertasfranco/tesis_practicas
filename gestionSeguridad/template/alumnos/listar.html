@@ -46,10 +46,14 @@
                     <thead class="bg-info text-white">
                         <tr>
                           <th>Codigo</th>
-                          <th>Nombre</th>
+                          <th>Número de matrícula</th>
                           <th>Apellidos</th>
+                          <th>Nombres</th>
                           <th>Email</th>
-                          <th>DNI</th>
+                          <th>Telefono</th>
+                          <th>Facultad</th>
+                          <th>Escuela</th>
+                          <th>Ciclo</th>
                           <th><center>Opciones</center></th>
                         </tr>
                       </thead>
@@ -57,10 +61,14 @@
                     {% for itemalumno in entity %}
                     <tr>
                         <td>{{itemalumno.id}}</td>
-                        <td>{{itemalumno.nombre}}</td>
+                        <td>{{itemalumno.nro_matricula}}</td>
                         <td>{{itemalumno.apellidos}}</td>
+                        <td>{{itemalumno.nombres}}</td>
                         <td>{{itemalumno.email}}</td>
-                        <td>{{itemalumno.dni}}</td>                    
+                        <td>{{itemalumno.telefono}}</td>
+                        <td>{{itemalumno.facultad}}</td>
+                        <td>{{itemalumno.escuela}}</td>
+                        <td>{{itemalumno.ciclo_academico}}</td>
                         <td style="text-align: center">
                             <a href="{% url 'editaralumno' itemalumno.id %}" class="btn btn-info btn-sm m-1">
                                 <i class="fa fa-edit"></i> Editar</a>
