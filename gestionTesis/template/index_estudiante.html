@@ -76,14 +76,17 @@
           </a>
         </div>
       </div>
-      <div class="card-body">
-        {% csrf_token %} 
-        {{ form | crispy }} 
-      </div>
-      <div class="card-footer text-muted row">
-        <div class="col">Hace 3 días</div>
-        <div class="col text-right"><button type="button" class="btn-sm btn-success"><i class="fas fa-upload mr-2"></i>Levantar observaciones</button></div>
-      </div>
+      <form method="post" enctype="multipart/form-data"> 
+        <div class="card-body">
+          {% csrf_token %} 
+          {{ form | crispy }} 
+        </div>
+    {% if plan_tesis %}
+        <div class="card-footer text-muted row">
+          <div class="col">Hace 3 días</div>
+          <div class="col text-right"><button type="button" class="btn btn-sm btn-success disabled"><i class="fas fa-upload mr-2"></i>Levantar observaciones</button></div>
+        </div>
+      </form>
     </div>
     <div class="card">
       <div class="card-header">
@@ -165,6 +168,13 @@
         </form>
       </div>
     </div>
+  {% else %}
+        <div class="card-footer text-muted row">
+          <div class="col text-right"><button type="submit" class="btn btn-sm btn-success"><i class="fas fa-upload mr-2"></i>Registrar Plan de Tesis</button></div>
+        </div>
+      </form>
+    </div>
+  {% endif %}
   </div>
   <!-- /.container-fluid -->
 </section>

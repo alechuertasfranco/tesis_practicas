@@ -6,10 +6,10 @@ class AlumnoForm(forms.ModelForm):
     class Meta:       
         model=Alumno
         #fields='__all__'
-        fields=['nro_matricula','apellidos','nombres','email','telefono','facultad','escuela','ciclo_academico'] 
+        fields=['user','nro_matricula','apellidos','nombres','email','telefono','facultad','escuela','ciclo_academico'] 
         
 class DocenteForm(forms.ModelForm):
     class Meta:
         model=Docente
         #fields='__all__'
-        fields=['apellidos','nombres','titulo','telefono','email']
+        fields=['user','apellidos','nombres','titulo','telefono','email']
