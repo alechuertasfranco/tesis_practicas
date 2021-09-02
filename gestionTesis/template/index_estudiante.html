@@ -82,7 +82,7 @@
           {% csrf_token %} 
           {{ form | crispy }} 
         </div>
-    {% if plan_tesis %}
+  {% if plan_tesis %}
         <div class="card-footer text-muted row">
           <div class="col">{{ form.ultima_edicion }}</div>
           <div class="col text-right">
@@ -93,86 +93,48 @@
         </div>
       </form>
     </div>
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Observaciones</h3>
-        <div class="card-tools">
-          <button type="button" class="btn btn-tool" data-card-widget="collapse">
-            <i class="fas fa-minus"></i>
-          </button>
-          <button type="button" class="btn btn-tool" data-card-widget="remove">
-            <i class="fas fa-times"></i>
-          </button>
+    {% if observaciones %}
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Observaciones</h3>
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          {% for observacion in observaciones %}
+            <form>
+              <div class="form-group">
+                <div class="row ml-1"><h5><b>{{ observacion.docente.apellidos }}</b></h5></div>
+                <div class="form-row">
+                  <div class="col">
+                    <label for="observation{{ observacion.id }}">Observación</label>
+                    <textarea class="form-control" id="observation{{ observacion.id }}" rows="3">{{ observacion.descripcion }}</textarea>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-6">
+                    <label>Estado</label>
+                    <div class="alert alert-danger">
+                      <i class="icon fas fa-ban"></i>{{ observacion.estado }}
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <label>Documento</label>
+                    <button type="button" class="btn btn-block btn-info alert"><i class="fas fa-download mr-2"></i>Descargar documento observado</button>
+                  </div>
+                </div>
+              </div><hr/>
+            </form>
+          {% endfor %}
         </div>
       </div>
-      <div class="card-body">
-        <form>
-          <div class="form-group">
-            <div class="row ml-1"><h5><b>Jurado 1</b></h5></div>
-            <div class="form-row">
-              <div class="col">
-                <label for="observation1">Observación</label>
-                <textarea class="form-control" id="observation1" rows="3">{% lorem 1 b random %}</textarea>
-              </div>
-            </div>   
-            <div class="row mt-2">
-              <div class="col-6">
-                <label>Estado</label>
-                <div class="alert alert-danger">
-                  <i class="icon fas fa-ban"></i>Por corregir
-                </div>
-              </div>
-              <div class="col-6">
-                <label>Documento</label>
-                <button type="button" class="btn btn-block btn-info alert"><i class="fas fa-download mr-2"></i>Descargar documento observado</button>
-              </div>
-            </div>
-          </div><hr/>
-          <div class="form-group">
-            <div class="row ml-1"><h5><b>Jurado 2</b></h5></div>
-            <div class="form-row" hidden>
-              <div class="col">
-                <label for="observation2">Observación</label>
-                <textarea class="form-control" id="observation2" rows="3"></textarea>
-              </div>
-            </div>   
-            <div class="row mt-2">
-              <div class="col-6">
-                <label>Estado</label>
-                <div class="alert alert-success">
-                  <i class="icon fas fa-check"></i>Aprobado
-                </div>
-              </div>
-              <div class="col-6">
-                <label>Documento</label>
-                <button type="button" class="btn btn-block btn-info alert" disabled><i class="fas fa-download mr-2"></i>Descargar documento observado</button>
-              </div>
-            </div>
-          </div><hr/>
-          <div class="form-group">
-            <div class="row ml-1"><h5><b>Jurado 3</b></h5></div>
-            <div class="form-row" hidden>
-              <div class="col">
-                <label for="observation3">Observación</label>
-                <textarea class="form-control" id="observation3" rows="3"></textarea>
-              </div>
-            </div>   
-            <div class="row mt-2">
-              <div class="col-6">
-                <label>Estado</label>
-                <div class="alert alert-success">
-                  <i class="icon fas fa-check"></i>Aprobado
-                </div>
-              </div>
-              <div class="col-6">
-                <label>Documento</label>
-                <button type="button" class="btn btn-block btn-info alert" disabled><i class="fas fa-download mr-2"></i>Descargar documento observado</button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+    {% endif %}
   {% else %}
         <div class="card-footer text-muted row">
           <div class="col text-right">
@@ -195,11 +157,7 @@
 <script src="{% static '/lte/plugins/daterangepicker/daterangepicker.js' %}"></script>
 <script src="{% static '/js/index_estudiante.js' %}"></script>
 {% if not plan_tesis %}
-  <script>
-    window.addEventListener('load', function () {
-      edit()
-    })
-  </script>
+  <script>window.addEventListener('load', function () { edit() })</script>
 {% endif %}
 {% if modal %}
 <script>
