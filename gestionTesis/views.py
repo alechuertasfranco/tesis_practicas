@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render
+from datetime import datetime
 from gestionSeguridad.models import *
 from gestionTesis.models import *
 from gestionTesis.forms import *
@@ -12,14 +13,15 @@ def index_estudiante(request):
   if plan_tesis:
     plan_tesis = PlanTesis.objects.get(alumno=alumno.id)
     form=PlanTesisFormEdit(instance=plan_tesis)
+    form.ultima_edicion = plan_tesis.ultima_edicion
     if request.method == "POST": 
+      plan_tesis.ultima_edicion = datetime.now()
       form=PlanTesisFormEdit(data=request.POST,instance=plan_tesis,files=request.FILES)
-      if form.is_valid(): 
-          form.save() 
-          form.alumno=alumno.id
+      if form.is_valid():
+          form.save()
           return redirect("index_estudiante") 
   else:
-    data = {'alumno': alumno}
+    data = {'alumno': alumno, 'ultima_edicion': datetime.now()}
     form=PlanTesisFormCreate(initial=data)
     if request.method == "POST": 
       form=PlanTesisFormCreate(data=request.POST,files=request.FILES)
