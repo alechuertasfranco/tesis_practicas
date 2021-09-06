@@ -3,59 +3,62 @@
     {% load crispy_forms_tags %}
     <div class="container">
         <div class="card card-info mx-4 my-4">
+            <form method="post" action="/save_Empresa" enctype="multipart/form-data" >
+                {% csrf_token %}
             <div class="card-header"> 
                 <h1 class="card-title">INFORMACION GENERAL DEL CAMPO DE PRACTICA</h1> 
             </div>
             <div class="card-body"> 
-                <form enctype="multipart/form-data" >
+               
                     <div class="row">
                         <div class="col-10 form-group">
                             <label>Razón Social</label>
-                            <input type="text" class="form-control" value="EMC SERVICIOS" >
+                            <input type="text" class="form-control" name="razon_social" value="EMC SERVICIOS" >
                         </div>
                         <div class="col-2 form-group">
                             <label>RUC</label>
-                            <input type="text" class="form-control" value="20538856674">
+                            <input type="text" class="form-control" name="ruc" value="20538856674">
                         </div>
                         <div class="col-2 form-group">
                             <label>Teléfono</label>
-                            <input type="text" class="form-control" value="7386048">
+                            <input type="text" class="form-control" name="telefono_E" value="7386048">
                         </div>
                         <div class="col-3 form-group">
                             <label>Dirección</label>
-                            <input type="text" class="form-control" value="CRA 4 22-33">
+                            <input type="text" class="form-control" name="direccion" value="CRA 4 22-33">
                         </div>
                         <div class="col-2 form-group">
                             <label>Ciudad</label>
-                            <input type="text" class="form-control"  value="Trujillo">
+                            <input type="text" class="form-control" name="ciudad" value="Trujillo">
                         </div>
                         <div class="col-5 form-group">
                             <label>Nombre del Gerente</label>
-                            <input type="text" class="form-control"  value="Luis Antonio Sanchez Rosales">
+                            <input type="text" class="form-control"  name="gerente" value="Luis Antonio Sanchez Rosales">
                         </div>
                         <div class="col-3 form-group">
                             <label>Nombre del Jefe Inmediato</label>
-                            <input type="text" class="form-control"  value="ELkin Antonio Monsalve Castaño">
+                            <input type="text" class="form-control"  name="nombres" value="ELkin Antonio Monsalve Castaño">
                         </div>
                         <div class="col-3 form-group">
                             <label>Cargo</label>
-                            <input type="text" class="form-control"  value="Gerente">
+                            <input type="text" class="form-control"  name="cargo" value="Gerente">
                         </div>
                         <div class="col-3 form-group">
                             <label>Telefono</label>
-                            <input type="text" class="form-control"  value="973515536">
+                            <input type="text" class="form-control" name="telefono_C" value="973515536">
                         </div>
                         <div class="col-3 form-group">
                             <label>Correo Electrónico</label>
-                            <input type="text" class="form-control"  value="emc.servicios@hotmail.com">
+                            <input type="text" class="form-control" name="email" value="emc.servicios@hotmail.com">
                         </div>
                     </div>
-                </form>
+                
             </div>
             <div class="card-footer">
                 <a href="{% url 'listarPractica' %}" class='btn btn-sm btn-danger btn-add'><i class=''></i> Cancelar</a>
-                <a href="{% url 'agregarAsesor' %}" class='btn btn-sm btn-primary btn-add'><i class=''></i> Siguiente</a>
+                <input class='btn btn-sm btn-success btn-add' type="submit" value="Siguiente">
             </div>
+        </form>
         </div>
     </div>
 {% endblock%}

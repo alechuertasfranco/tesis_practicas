@@ -11,14 +11,14 @@
                 <div class="row">
                         <div class="form-group col-12">
                             <label>Asesores</label>
-                            <select class="form-control select2" style="width: 100%;">
-                                <option value="" selected="selected"
-                                    disabled="disabled">Seleccione un Asesor</option>
-                                <option>Ing. Robert Jerry Sanchez Ticona</option>
-                                <option>Ing. Juan Pedro Santos Fernandez</option>        
-                                <option >Ing. Luis Boy Chavil</option>
-                                <option >Ing. Marcelino Torres Villanueva</option>
-                                <option>Ing. Jose Alverto Gomez Avila</option>
+                            <select class="form-control select2" id="id_asesor" style="width: 100%;">
+                                <option value=""  selected="selected" disabled="disabled">Seleccione un Asesor</option>
+                                {% if docente %}
+                                    {% for itemdocente in docente %} 
+                                    <option value="{{ itemdocente.id }}">{{itemdocente.nombres }} {{ itemdocente.apellidos }}</option>
+                                    {% endfor %}
+                                {% else %}
+                                {% endif %}
                             </select>
                         </div>
                     </div>
@@ -29,39 +29,43 @@
             </div>
         </div>
         <div class="card card-info mx-4 my-4" id="info-asesor" style="display: none;">
+            <form method="post" action="/save_Asesor" enctype="multipart/form-data" >
+                {% csrf_token %}
             <div class="card-header"> 
                 <h1 class="card-title">INFORMACIÓN DEL ASESOR</h1> 
             </div>
             <div class="card-body">
-                <form enctype="multipart/form-data" > 
                 <div class="row">
+                        <div style="display: none;">
+                            <input type="text" class="" id="asesor_id" name="asesor_id">
+                        </div>
                         <div class="col-6">
                             <label>Nombres</label>
-                            <input type="text" class="form-control" readonly value="ROBERT JERRY">
+                            <input type="text" id="nombre" class="form-control" disabled >
                         </div>
                         <div class="col-6">
                             <label>Apellidos</label>
-                            <input type="text" class="form-control" readonly value="SÁNCHEZ TICONA">
+                            <input type="text" id="apellido" class="form-control" disabled >
                         </div>
                         <div class="col-5">
-                            <label>Profesion</label>
-                            <input type="text" class="form-control" readonly value="INGENIERO DE COMPUTACIÓN Y SISTEMA">
+                            <label>Titulo</label>
+                            <input type="text" id="titulo" class="form-control" disabled >
                         </div>
                         <div class="col-3">
                             <label>Teléfono</label>
-                            <input type="text" class="form-control" value="99xxxxxx">
+                            <input type="text" id="telefono" class="form-control" disabled >
                         </div>
                         <div class="col-4">
                             <label>Correo Electrónico</label>
-                            <input type="text" class="form-control"  value="rsanchezt@unitru.edu.pe">
+                            <input type="text" id="correo" class="form-control"  disabled>
                         </div>  
                 </div>
-            </form>  
             </div>
             <div class="card-footer">
                 <a href="{% url 'listarPractica' %}" class='btn btn-sm btn-danger btn-add'><i class=''></i> Cancelar</a>
-                <a href="{% url 'listarPractica_id' %}" class='btn btn-sm btn-success btn-add'><i class=''></i> Guardar</a>
+                <input class='btn btn-sm btn-success btn-add' type="submit" value="Guardar">
             </div>
+        </form>  
         </div>
     </div>
 {% endblock%}
@@ -75,7 +79,28 @@
     } else {
         x.style.display = "none";
     }
+    id = document.getElementById("id_asesor").value;
+    verAsesor(id);
 }
+
+    function verAsesor(id){
+        console.log(id);
+        $.ajax({
+            url:"/verAsesor/"+id+"/",
+            type:"get",
+            dataType:"json",
+            success:function(response){
+                $('#nombre').val(response['nombres']);
+                $('#apellido').val(response['apellidos']);
+                $('#titulo').val(response['titulo']);
+                $('#telefono').val(response['telefono']);
+                $('#correo').val(response['email']);
+                $('#asesor_id').val(response['id']);
+               
+            }
+
+        });
+    }
 
 </SCRIPT>
 

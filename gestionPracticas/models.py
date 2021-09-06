@@ -7,6 +7,8 @@ class Empresa(models.Model):
     razon_social = models.CharField(max_length=100)
     ruc = models.CharField(max_length=11) 
     direccion = models.CharField(max_length=200)
+    ciudad = models.CharField(max_length=30)
+    gerente = models.CharField(max_length=100)
     telefono = models.CharField(max_length=9)
     estado = models.CharField(max_length=10, default="Activo")  
 
@@ -16,7 +18,8 @@ class Contacto(models.Model):
     cargo = models.CharField(max_length=50)
     telefono = models.CharField(max_length=9)
     email = models.CharField(max_length=50)
-    estado = models.CharField(max_length=10, default="Activo")  
+    estado = models.CharField(max_length=10, default="Activo")
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)      
 
 class PlanPracticas(models.Model):
     fecha_tramite = models.DateField()

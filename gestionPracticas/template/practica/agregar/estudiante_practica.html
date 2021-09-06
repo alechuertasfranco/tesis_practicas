@@ -5,29 +5,22 @@
     {% block css %}
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
     <style type="text/css">
-      input[type="file"] {
-    display: none;
-}
-.custom-file-upload {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
-}
-.custom-file-upload:hover {
-  color: steelblue;
-}
+
         </style>
     {% endblock css %}
 
     <div class="container">
         <div class="card card-info mx-4 my-4">
+            <form method="post" action="/save_Practica" enctype="multipart/form-data" >
+                {% csrf_token %}
             <div class="card-header"> 
                 <h1 class="card-title">REGISTRAR PLAN DE PRACTICA</h1> 
             </div>
             <div class="card-body"> 
-                <form enctype="multipart/form-data" >
                 <div class="row">
+                        <div style="display: none;">
+                            <input type="text" class=""  name="alumno_id" value="{{ alumno.id }}">
+                        </div>
                         <div class="form-group col-3">
                             <label>Numero Matricula</label>
                             <input type="text" class="form-control" readonly value="{{ alumno.nro_matricula }}">
@@ -54,7 +47,7 @@
                         </div>
                         <div class="form-group col-2">
                             <label>Codigo de Operacion</label>
-                            <input type="text" class="form-control"  value="2542">
+                            <input type="text" class="form-control"  value="{{ id_operacion }}" disabled>
                         </div>
                         <div class="form-group col">
                             <label for="exampleInputDate">Fecha de Tramite</label>
@@ -62,31 +55,32 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                               </div>
-                              <input type="date" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask >
+                              <input type="date" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="fecha_tramite" >
                             </div>
                           </div>
                         <div class=" form-group col">
                             <label for="exampleInputDate"><br></label>
-                                <label for="file-upload" style="width: 100%;"class="custom-file-upload">
+                                <label for="file-upload" >
                                     <i class="fa fa-cloud-upload"></i> Documento Derecho de Tramite
                                 </label>
-                                <input id="file-upload" type="file"/>
+                                <input type="file" name="derecho_tramite"/>
 
                         </div>
                         <div class=" form-group col">
                              <label for="exampleInputDate"><br></label>
-                                <label for="file-upload" style="width: 100%;" class="custom-file-upload">
+                                <label for="file-upload" >
                                     <i class="fa fa-cloud-upload"></i> Documento Plan de Practica        
                                 </label>
-                            <input id="file-upload" type="file"/>
+                            <input type="file" name="plan_practicas" />
                         </div>   
                 </div>
-            </form> 
+            
             </div>
             <div class="card-footer">
                 <a href="{% url 'listarPractica' %}" class='btn btn-sm btn-danger btn-add'><i class=''></i> Cancelar</a>
-                <a href="{% url 'save_Empresa' %}" class='btn btn-sm btn-primary btn-add'><i class=''></i> Siguiente</a>
+                <input class='btn btn-sm btn-success btn-add' type="submit" value="Siguiente">
             </div>
+        </form> 
         </div>
     </div>
 {% endblock%}

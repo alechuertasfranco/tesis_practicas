@@ -27,7 +27,7 @@
                 <div class="col-md-5 pull-right">   
                 </div>
                 <div class="col-md-1 pull-right">
-                    <a href="/agregarPractica/{{ id }}" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i> NUEVO</a>
+                    <a href="/agregarPractica" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i> NUEVO</a>
                 </div>
             </div>
 
@@ -42,24 +42,26 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% if planPractica %}
+                        {% for itemplan in planPractica %}
                          <tr>
-                            <th>{{id}}</th>
-                            <th>{{descripcion}}</th>
+                            <th>{{ itemplan.id }}</th>
+                            <th>{{ itemplan.asesor.apellidos }} / {{ itemplan.empresa.razon_social }}</th>
                             <th>
-                                {% if id %}
-                                <center>
+                                <center> 
                                     <a href="#"  class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Ver</a> 
                                     <a href="" class="btn btn-info btn-sm"><i class="fas fa-download"></i>Descargar</a>
                                 </center>
-                                {% else %}
-                              
-                                {% endif %}
                             </th>
-                            {% if id %}
-                            <th>{{ estado }}</th>
+                            <th>{{ itemplan.estado }}</th>
+                            {% endfor %}
                             {% else %}
-                          
-                            {% endif %}
+                            <tr style="text-align: center;">
+                                <td colspan="3">
+                                    <p>No hay registros</p>
+                                </td>
+                                </tr>
+                        {% endif %}
                         </tr>        
                     </tbody>
                 </table>
