@@ -1,5 +1,8 @@
 {% extends "plantilla.html" %}
-
+{% block practicas_link %} active {% endblock %}
+{% block practicas_item %} menu-open {% endblock %}
+{% block practicas_inicio %} active {% endblock %}
+{% load crispy_forms_tags %} 
 {% block content %}
    <div class="container">
        <div class="car card-outline card-info mt-3">
@@ -24,11 +27,7 @@
                 <div class="col-md-5 pull-right">   
                 </div>
                 <div class="col-md-1 pull-right">
-                    {% if id %}
-                    
-                    {% else %}
-                    <a href="{% url 'agregarPractica' %}" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i> NUEVO</a>
-            {% endif %}
+                    <a href="/agregarPractica/{{ id }}" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i> NUEVO</a>
                 </div>
             </div>
 

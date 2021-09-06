@@ -294,6 +294,23 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item {% block practicas_item %}{% endblock practicas_item %}">
+            <a href="#" class="nav-link {% block practicas_link %}{% endblock practicas_link %}">
+              <i class="nav-icon fas fa-briefcase"></i>
+              <p>
+                Practicas
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/listarPractica" class="nav-link {% block practicas_inicio %}{% endblock practicas_inicio %}">
+                  <i class="fas fa-tasks nav-icon"></i>
+                  <p>Inicio</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
