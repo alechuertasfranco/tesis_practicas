@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from gestionSeguridad.models import Docente, Alumno
+from gestionSeguridad.models import Docente, Alumno, Escuela, Facultad
 from django.core.paginator import Paginator
 from .forms import AlumnoForm, DocenteForm
 from django.http import Http404
@@ -91,6 +91,12 @@ def eliminaralumno(request,id):
     messages.error(request, "Eliminado correctamente")
     return redirect("listaralumno")
 
+@login_required(login_url="/")
+def load_escuelas(request):
+    facultad_id = request.GET.get('facultad_id')
+    escuelas = Escuela.objects.filter(facultad_id=facultad_id).order_by('descripcion')
+    return render(request, 'alumnos/escuelas.html', {'escuelas': escuelas})
+
 #Docentes
 @login_required(login_url="/")
 def listardocente(request):
@@ -142,3 +148,4 @@ def eliminardocente(request,id):
     docente.save()
     messages.error(request, "Eliminado correctamente")
     return redirect("listardocente")
+
