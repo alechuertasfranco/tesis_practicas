@@ -18,4 +18,36 @@
         </div>
     </div>
 </div>
-</div> {% endblock%}
+</div> 
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+      window.onload=function(){
+        var escuela_id = $("#id_escuela").val();  
+        var facultad_id = $("#id_facultad").val();  
+            $.ajax({                       
+                url: "../../agregaralumno/escuelas/",                   
+                data: {
+                'facultad_id': facultad_id     
+                },
+                success: function (data) {  
+                $("#id_escuela").html(data); 
+                $('#id_escuela option[value='+escuela_id+']').attr('selected','selected');
+                }
+            });
+        }
+
+    $("#id_facultad").change(function () {
+      var url = "escuelas/";  
+      var facultad_id = $(this).val();  
+      $.ajax({                       
+        url: url,                   
+        data: {
+          'facultad_id': facultad_id     
+        },
+        success: function (data) {  
+          $("#id_escuela").html(data); 
+        }
+      });
+    });
+  </script>
+  {% endblock%}
