@@ -22,6 +22,7 @@ class Migration(migrations.Migration):
                 ('nombres', models.CharField(max_length=40)),
                 ('titulo', models.CharField(max_length=5)),
                 ('telefono', models.CharField(max_length=9)),
+                ('dni', models.CharField(max_length=8)),
                 ('email', models.EmailField(max_length=254)),
                 ('estado', models.BooleanField(default=True)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),

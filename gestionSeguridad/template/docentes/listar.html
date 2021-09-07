@@ -50,6 +50,7 @@
                           <th>Nombres</th>
                           <th>Título</th>
                           <th>Telefono</th>
+                          <th>DNI</th>
                           <th>Email</th>
                           <th><center>Opciones</center></th>
                         </tr>
@@ -62,6 +63,7 @@
                         <td>{{itemdocente.nombres}}</td>
                         <td>{{itemdocente.titulo}}</td>
                         <td>{{itemdocente.telefono}}</td>                    
+                        <td>{{itemdocente.dni}}</td>                    
                         <td>{{itemdocente.email}}</td>                
                         <td style="text-align: center">
                             <a href="{% url 'editardocente' itemdocente.id %}" class="btn btn-info btn-sm m-1">
@@ -74,7 +76,7 @@
                     {% endfor %}
                 {% else %}
                     <tr style="text-align:center">
-                        <td colspan="6">
+                        <td colspan="8">
                             <p>No hay registros</p>
                         </td>
                     </tr>
