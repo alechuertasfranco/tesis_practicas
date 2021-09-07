@@ -5,7 +5,8 @@ from django.shortcuts import render
 from gestionSeguridad.models import Alumno,Docente
 from gestionPracticas.models import Contacto, Empresa, PlanPracticas
 from django.db.models import Q
-
+from django.urls import reverse
+from django.shortcuts import redirect
 
 import time
 # Create your views here.
@@ -80,7 +81,7 @@ def save_Asesor(request):
         id=ultimo_registro.id
         docente=Docente.objects.get(id = request.POST['asesor_id'])
         PlanPracticas.objects.filter(id=id).update(asesor=docente, estado="Proceso")
-        return render(request,"practica/index.html")
+        return redirect(reverse('listarPractica'))
     docente=Docente.objects.filter(estado=True).distinct()
     context={'docente':docente}
     return render(request,"practica/agregar/asesor_practica.html",context)
@@ -99,6 +100,7 @@ def verAsesor(request,id):
 
 
 def listarPractica(request):
+    
     id_alumno=request.user.id
     alum=Alumno.objects.get(id = id_alumno)
     planPractica=PlanPracticas.objects.filter(alumno=alum).exclude(estado= 'INCOMPLETO').distinct()
