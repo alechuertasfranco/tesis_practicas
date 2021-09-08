@@ -59,9 +59,9 @@ def save_Practica(request):
             plan.derecho_tramite=_derecho_tramite
             plan.plan_practicas=_plan_practicas
             plan.alumno= _alumno
-            plan.empresa= Empresa.objects.get(id = 1)
+            plan.empresa= Empresa.objects.get(id = 0)
             plan.asesor= Docente.objects.get(id = 1)
-            plan.contacto= Contacto.objects.get(id = 1)
+            plan.contacto= Contacto.objects.get(id = 0)
             plan.estado="INCOMPLETO"
             plan.save()
             context={}
@@ -80,7 +80,7 @@ def save_Empresa(request):
         _alumno=Alumno.objects.get(user=request.user.id)
         operacion=PlanPracticas.objects.filter(alumno=_alumno).filter(estado= 'INCOMPLETO')
         context={}
-        if operacion and operacion[0].empresa.id != 1:
+        if operacion and operacion[0].empresa.id != 0:
             Empresa.objects.filter(id=operacion[0].empresa.id).update(razon_social=razon_social,ruc=ruc,direccion=direccion,ciudad=ciudad,gerente=gerente,telefono=telefono)
         else:
             empresa=Empresa()
@@ -100,7 +100,7 @@ def save_Empresa(request):
         email=request.POST['email']
         empresa=Empresa.objects.latest('id')
                 
-        if operacion and operacion[0].empresa.id != 1:
+        if operacion and operacion[0].empresa.id != 0:
             Contacto.objects.filter(id=operacion[0].contacto.id).update(nombres=nombres,cargo=cargo,telefono=telefono,email=email,empresa=empresa)
         else:
             contacto= Contacto()
