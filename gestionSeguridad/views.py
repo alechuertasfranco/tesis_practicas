@@ -79,8 +79,8 @@ def agregaralumno(request):
             msg = MIMEMultipart()
             message = "El usuario de su cuenta es: "+ cadena[:indice] + " y la contraseña es: " + alumno.nro_matricula
             # setup the parameters of the message
-            password = "70469760"
-            msg['From'] = "apaulino@unitru.edu.pe"
+            password = "5BGUr&OhNi"
+            msg['From'] = "apracticastesis@gmail.com"
             msg['To'] = alumno.email
             msg['Subject'] = "Cuenta de usuario"
 
@@ -175,8 +175,8 @@ def agregardocente(request):
             msg = MIMEMultipart()
             message = "El usuario de su cuenta es: "+ cadena[:indice] + " y la contraseña es: " + docente.dni
             # setup the parameters of the message
-            password = "70469760"
-            msg['From'] = "apaulino@unitru.edu.pe"
+            password = "5BGUr&OhNi"
+            msg['From'] = "apracticastesis@gmail.com"
             msg['To'] = docente.email
             msg['Subject'] = "Cuenta de usuario"
             # add in the message body
@@ -187,6 +187,7 @@ def agregardocente(request):
             # Login Credentials for sending the mail
             server.login(msg['From'], password)            
             # send the message via the server.
+            
             server.sendmail(msg['From'], msg['To'], msg.as_string())            
             server.quit()            
             print ("successfully sent email to %s:" % (msg['To']))            
