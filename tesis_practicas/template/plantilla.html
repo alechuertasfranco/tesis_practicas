@@ -25,7 +25,9 @@
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{% static '/lte/plugins/daterangepicker/daterangepicker.css' %}">
   <!-- summernote -->
-  <link rel="stylesheet" href="{% static '/lte/plugins/summernote/summernote-bs4.min.css' %}">
+  <link rel="stylesheet" href="{% static '/lte/plugins/summernote/summernote-bs4.min.css' %}">  
+  <!-- Mensajes Toastr-->
+  <link rel="stylesheet" type="text/css" href="{% static 'lte/plugins/toastr/toastr.css' %}" media="all">
   {% block css %}{% endblock css %}
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -44,10 +46,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
       </li>
     </ul>
 
@@ -180,7 +179,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="{% url 'home' %}" class="brand-link">
       <img src="{% static '/lte/dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Prácticas y Tesis</span>
     </a>
@@ -214,6 +213,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          {% if user.is_staff %}
           <li class="nav-item {% block menu2 %}{% endblock menu2 %}">
             <a href="#" class="nav-link {% block menu %}{% endblock menu %}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -237,6 +237,8 @@
               </li>
             </ul>
           </li>
+          {% endif %}
+          {% if 'GrupoAlumno' == request.user.groups.all.0.name %}
           <li class="nav-item {% block estudiante_item %}{% endblock estudiante_item %}">
             <a href="#" class="nav-link {% block estudiante_link %}{% endblock estudiante_link %}">
               <i class="nav-icon fas fa-user-graduate"></i>
@@ -260,6 +262,7 @@
               </li>
             </ul>
           </li>
+          {% endif %}
           <li class="nav-item {% block jurado_item %}{% endblock jurado_item %}">
             <a href="#" class="nav-link {% block jurado_link %}{% endblock jurado_link %}">
               <i class="nav-icon fas fa-chalkboard-teacher"></i>
@@ -316,6 +319,12 @@
                 </a>
               </li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'logout' %}" class="nav-link">
+              <i class="fas fa-sign-out-alt nav-icon"></i>
+              <p>Salir</p>
+            </a>
           </li>
         </ul>
       </nav>
@@ -379,6 +388,9 @@
 <script src="{% static '/lte/dist/js/demo.js' %}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{% static '/lte/dist/js/pages/dashboard.js' %}"></script>
+<!-- Mensajes Toastr-->
+<script type="text/javascript" src="{% static 'lte/plugins/toastr/toastr.min.js' %}"></script>  
+
 {% block js %}{% endblock js %}
 </body>
 </html>
