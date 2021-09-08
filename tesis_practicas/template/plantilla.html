@@ -214,6 +214,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          {% if user.is_staff %}
           <li class="nav-item {% block menu2 %}{% endblock menu2 %}">
             <a href="#" class="nav-link {% block menu %}{% endblock menu %}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -237,6 +238,7 @@
               </li>
             </ul>
           </li>
+          {% endif %}
           <li class="nav-item {% block estudiante_item %}{% endblock estudiante_item %}">
             <a href="#" class="nav-link {% block estudiante_link %}{% endblock estudiante_link %}">
               <i class="nav-icon fas fa-user-graduate"></i>
