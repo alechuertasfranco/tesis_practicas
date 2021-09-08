@@ -17,7 +17,6 @@ class Migration(migrations.Migration):
             name='Contacto',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('apellidos', models.CharField(max_length=50)),
                 ('nombres', models.CharField(max_length=50)),
                 ('cargo', models.CharField(max_length=50)),
                 ('telefono', models.CharField(max_length=9)),
