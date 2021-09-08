@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from gestionSeguridad.models import Docente, Alumno, Escuela, Facultad
@@ -8,6 +10,12 @@ from django.core.paginator import Paginator
 from .forms import AlumnoForm, DocenteForm
 from django.http import Http404
 from django.db.models import Q
+#EMAIL
+# import necessary packages
+ 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 
 # Create your views here.
 def acceder(request):
@@ -59,13 +67,50 @@ def listaralumno(request):
     return render(request,"alumnos/listar.html", context)
 
 @login_required(login_url="/")
-def agregaralumno(request): 
+def agregaralumno(request):
     form=AlumnoForm() 
     if request.method == "POST": 
         form=AlumnoForm(request.POST)
         if form.is_valid(): 
-            form.estado=True
-            form.save() 
+            alumno = form.save(commit=False)
+            cadena = alumno.email
+            indice = cadena.index('@')
+            #MSG
+            msg = MIMEMultipart()
+            message = "El usuario de su cuenta es: "+ cadena[:indice] + " y la contraseña es: " + alumno.nro_matricula
+            # setup the parameters of the message
+            password = "70469760"
+            msg['From'] = "apaulino@unitru.edu.pe"
+            msg['To'] = alumno.email
+            msg['Subject'] = "Cuenta de usuario"
+
+            # add in the message body
+            msg.attach(MIMEText(message, 'plain'))
+            
+            #create server
+            server = smtplib.SMTP('smtp.gmail.com: 587')
+            
+            server.starttls()
+            
+            # Login Credentials for sending the mail
+            server.login(msg['From'], password)
+            
+            # send the message via the server.
+            server.sendmail(msg['From'], msg['To'], msg.as_string())
+            
+            server.quit()
+            
+            print ("successfully sent email to %s:" % (msg['To']))
+            
+            user = User.objects.create_user(username = cadena[:indice], 
+                                            first_name = alumno.nombres,
+                                            last_name = alumno.apellidos,
+                                            email=alumno.email, 
+                                            password=alumno.nro_matricula)
+            user.save()
+            alumno.user = user
+            alumno.estado = True
+            alumno.save()
             return redirect("listaralumno") 
     context={'form':form}
     return render(request, "alumnos/agregar.html", context)
@@ -123,6 +168,37 @@ def agregardocente(request):
     if request.method == "POST": 
         form=DocenteForm(request.POST)
         if form.is_valid(): 
+            docente = form.save(commit=False)
+            cadena = docente.email
+            indice = cadena.index('@')
+            #MSG
+            msg = MIMEMultipart()
+            message = "El usuario de su cuenta es: "+ cadena[:indice] + " y la contraseña es: " + docente.dni
+            # setup the parameters of the message
+            password = "70469760"
+            msg['From'] = "apaulino@unitru.edu.pe"
+            msg['To'] = docente.email
+            msg['Subject'] = "Cuenta de usuario"
+            # add in the message body
+            msg.attach(MIMEText(message, 'plain'))            
+            #create server
+            server = smtplib.SMTP('smtp.gmail.com: 587')            
+            server.starttls()            
+            # Login Credentials for sending the mail
+            server.login(msg['From'], password)            
+            # send the message via the server.
+            server.sendmail(msg['From'], msg['To'], msg.as_string())            
+            server.quit()            
+            print ("successfully sent email to %s:" % (msg['To']))            
+            user = User.objects.create_user(username = cadena[:indice], 
+                                            first_name = docente.nombres,
+                                            last_name = docente.apellidos,
+                                            email=docente.email, 
+                                            password=docente.dni)
+            user.save()
+            docente.user = user
+            docente.estado = True
+            docente.save()            
             form.save() 
             return redirect("listardocente") 
     context={'form':form}
