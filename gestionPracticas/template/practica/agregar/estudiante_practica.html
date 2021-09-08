@@ -1,12 +1,9 @@
 {% extends "plantilla.html" %}
+{% load static %}
 {% block content %}
-    {% load crispy_forms_tags %}
-
     {% block css %}
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
-    <style type="text/css">
-
-        </style>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/> 
+    <link rel="stylesheet" href="{% static '/lte/plugins/daterangepicker/daterangepicker.css' %}"/>
     {% endblock css %}
 
     <div class="container">
@@ -47,7 +44,7 @@
                         </div>
                         <div class="form-group col-2">
                             <label>Codigo de Operacion</label>
-                            <input type="text" class="form-control"  value="{{ id_operacion }}" disabled>
+                            <input type="text" class="form-control"  value="{{ id_operacion }}" disabled>                 
                         </div>
                         <div class="form-group col">
                             <label for="exampleInputDate">Fecha de Tramite</label>
@@ -55,7 +52,11 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                               </div>
-                              <input type="date" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="fecha_tramite" >
+                                {% if fecha_operacion %}
+                                <input type="date" class="form-control"  name="fecha_tramite" value="{{ fecha_operacion }}" >
+                                {% else %}
+                                <input type="date" class="form-control"  name="fecha_tramite" >
+                                {% endif %}
                             </div>
                           </div>
                         <div class=" form-group col">
@@ -84,3 +85,24 @@
         </div>
     </div>
 {% endblock%}
+
+
+{% block js %}
+{% if modal %}
+<script>
+  console.log("MODAL")
+  function modalPracticas() {
+    Swal.fire({
+        title: "Se han ocultado los documentos",
+        text: "Por motivos de seguridad los documentos no seran cargados, porfavor subir los documentos requeridos",
+        icon: "warning",
+    }).then(function() {
+    });
+    }
+  window.onload = modalPracticas()
+</script>
+{% endif %}
+  {% endblock js %}
+
+
+

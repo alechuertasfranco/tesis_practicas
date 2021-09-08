@@ -9,65 +9,111 @@ from django.urls import reverse
 from django.shortcuts import redirect
 
 import time
+from django.db import models
 # Create your views here.
 def agregarPractica(request):
-    id=request.user.id
-    try:
-        id_operacion=PlanPracticas.objects.latest('id')
-    except Exception as e:
-        id_operacion=0
-    aux=""
-    if(id_operacion==0):
-        id_operacion=1
-        aux=str(id_operacion)
-    else:
-        aux=str(int(id_operacion.id)+1);
-    id_operacion=aux.zfill(4)    
-    alumno=Alumno.objects.raw('SELECT * FROM "gestionSeguridad_alumno" WHERE id=%s LIMIT 1',[id])[0]
-    context={"alumno":alumno,'id_operacion':id_operacion}
+    alumno=Alumno.objects.get(user=request.user.id)
+    operacion=PlanPracticas.objects.filter(alumno=alumno).filter(estado= 'INCOMPLETO')
+    if operacion:
+        aux=str(int(operacion[0].id));
+        id_operacion=aux.zfill(4)  
+        fecha_dt = operacion[0].fecha_tramite.strftime('%Y-%m-%d')
+        context={"alumno":alumno,'id_operacion':id_operacion,'fecha_operacion':fecha_dt,'modal': True} 
+    else:    
+        try:
+            id_operacion=PlanPracticas.objects.latest('id')
+        except Exception as e:
+            id_operacion=0
+        aux=""
+        if(id_operacion==0):
+            id_operacion=1
+            aux=str(id_operacion)
+        else:
+            aux=str(int(id_operacion.id)+1);
+        id_operacion=aux.zfill(4)    
+        alumno=Alumno.objects.get(user=request.user.id)
+        context={"alumno":alumno,'id_operacion':id_operacion}
     return render(request,"practica/agregar/estudiante_practica.html",context)
 
 def save_Practica(request):
     if request.method=="POST":
-        plan= PlanPracticas()
-        plan.fecha_tramite=request.POST['fecha_tramite']
-        plan.derecho_tramite=request.FILES['derecho_tramite']
-        plan.plan_practicas=request.FILES['plan_practicas']
-        plan.alumno= Alumno.objects.get(id = request.POST['alumno_id'])
-        plan.empresa= Empresa.objects.get(id = 1 )
-        plan.asesor= Docente.objects.get(id = 1)
-        plan.contacto= Contacto.objects.get(id = 1)
-        plan.estado="INCOMPLETO"
-        plan.save()
-        return render(request,"practica/agregar/empresa_practica.html")
+        _fecha_tramite=request.POST['fecha_tramite']
+        _derecho_tramite=request.FILES['derecho_tramite']
+        _plan_practicas=request.FILES['plan_practicas']
+        _alumno=Alumno.objects.get(user=request.user.id)
+
+        operacion=PlanPracticas.objects.filter(alumno=_alumno).filter(estado= 'INCOMPLETO')
+        context={}
+        if operacion:
+            _plan_edit=PlanPracticas.objects.get(id = operacion[0].id)
+            _plan_edit.derecho_tramite=_derecho_tramite
+            _plan_edit.plan_practicas=_plan_practicas
+            _plan_edit.save()
+            _contacto=Contacto.objects.get(id = operacion[0].contacto.id)
+            _empresa=Empresa.objects.get(id = operacion[0].empresa.id)
+            if _contacto.nombres!= 'null' and _empresa.ruc != 'null':
+                context={'contacto':_contacto,'empresa':_empresa}
+        else:
+            plan= PlanPracticas()
+            plan.fecha_tramite=_fecha_tramite
+            plan.derecho_tramite=_derecho_tramite
+            plan.plan_practicas=_plan_practicas
+            plan.alumno= _alumno
+            plan.empresa= Empresa.objects.get(id = 1)
+            plan.asesor= Docente.objects.get(id = 1)
+            plan.contacto= Contacto.objects.get(id = 1)
+            plan.estado="INCOMPLETO"
+            plan.save()
+            context={}
+        return render(request,"practica/agregar/empresa_practica.html",context)
     return render(request,"practica/agregar/estudiante_practica.html")
 
 def save_Empresa(request):
     if request.method=="POST":
-        empresa=Empresa()
-        empresa.razon_social=request.POST['razon_social']
-        empresa.ruc=request.POST['ruc']
-        empresa.direccion=request.POST['direccion']
-        empresa.ciudad=request.POST['ciudad']
-        empresa.gerente=request.POST['gerente']
-        empresa.telefono=request.POST['telefono_E']
-        empresa.save()
+        razon_social=request.POST['razon_social']
+        ruc=request.POST['ruc']
+        direccion=request.POST['direccion']
+        ciudad=request.POST['ciudad']
+        gerente=request.POST['gerente']
+        telefono=request.POST['telefono_E']
+
+        _alumno=Alumno.objects.get(user=request.user.id)
+        operacion=PlanPracticas.objects.filter(alumno=_alumno).filter(estado= 'INCOMPLETO')
+        context={}
+        if operacion and operacion[0].empresa.id != 1:
+            Empresa.objects.filter(id=operacion[0].empresa.id).update(razon_social=razon_social,ruc=ruc,direccion=direccion,ciudad=ciudad,gerente=gerente,telefono=telefono)
+        else:
+            empresa=Empresa()
+            empresa.razon_social=razon_social
+            empresa.ruc=ruc
+            empresa.direccion=direccion
+            empresa.ciudad=ciudad
+            empresa.gerente=gerente
+            empresa.telefono=telefono
+            empresa.save()
 
         time.sleep(0.05)
-        
-        contacto= Contacto()
-        contacto.apellidos="HOla"
-        contacto.nombres=request.POST['nombres']
-        contacto.cargo=request.POST['cargo']
-        contacto.telefono=request.POST['telefono_C']
-        contacto.email=request.POST['email']
-        contacto.empresa=Empresa.objects.latest('id')
-        contacto.save()
 
-        time.sleep(0.05)
-        ultimo_registro=PlanPracticas.objects.latest('id')
-        id=ultimo_registro.id
-        PlanPracticas.objects.filter(id=id).update(empresa=Empresa.objects.latest('id'),contacto=Contacto.objects.latest('id'))
+        nombres=request.POST['nombres']
+        cargo=request.POST['cargo']
+        telefono=request.POST['telefono_C']
+        email=request.POST['email']
+        empresa=Empresa.objects.latest('id')
+                
+        if operacion and operacion[0].empresa.id != 1:
+            Contacto.objects.filter(id=operacion[0].contacto.id).update(nombres=nombres,cargo=cargo,telefono=telefono,email=email,empresa=empresa)
+        else:
+            contacto= Contacto()
+            contacto.nombres=request.POST['nombres']
+            contacto.cargo=request.POST['cargo']
+            contacto.telefono=request.POST['telefono_C']
+            contacto.email=request.POST['email']
+            contacto.empresa=Empresa.objects.latest('id')
+            contacto.save()
+            time.sleep(0.05)
+            ultimo_registro=PlanPracticas.objects.latest('id')
+            id=ultimo_registro.id
+            PlanPracticas.objects.filter(id=id).update(empresa=Empresa.objects.latest('id'),contacto=Contacto.objects.latest('id'))
 
         docente=Docente.objects.filter(estado=True).distinct()
         context={'docente':docente}
@@ -100,19 +146,12 @@ def verAsesor(request,id):
 
 
 def listarPractica(request):
-    
-    id_alumno=request.user.id
-    alum=Alumno.objects.get(id = id_alumno)
-    planPractica=PlanPracticas.objects.filter(alumno=alum).exclude(estado= 'INCOMPLETO').distinct()
-    context={'planPractica': planPractica}
+    alumno=Alumno.objects.get(user=request.user.id)
+    plan_Incompleto=PlanPracticas.objects.filter(alumno=alumno).filter(estado= 'INCOMPLETO').distinct()
+    planPractica=PlanPracticas.objects.filter(alumno=alumno).exclude(estado= 'INCOMPLETO').distinct()
+    context={'planPractica': planPractica,'plan_Incompleto':plan_Incompleto}
     return render(request,"practica/index.html",context)
 
-def listarPractica_id(request):
-    id='00145'
-    descripcion="EMC SERVICIOS / SÁNCHEZ TICONA ROBERT JERRY"
-    estado="Proceso"
-    context={'id':id,'descripcion':descripcion,'estado':estado}
-    return render(request,"practica/index.html",context)
 
 def listarPractica_aceptado(request):
     id='00145'
