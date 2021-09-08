@@ -1,8 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from gestionSeguridad.models import Docente, Alumno, Escuela, Facultad
@@ -10,7 +9,6 @@ from django.core.paginator import Paginator
 from .forms import AlumnoForm, DocenteForm
 from django.http import Http404
 from django.db.models import Q
-from django.urls import reverse
 #EMAIL
 # import necessary packages
  
@@ -28,16 +26,16 @@ def acceder(request):
             usuario = authenticate(username=nombre_usuario,password=password)
             if usuario is not None:
                 login(request,usuario)
-                return redirect("home")
+                messages.success(request, "Ingresó correctamente")
+                return redirect("home")            
             else:
                 messages.error(request, "Los datos son incorrectos")
         else:
             messages.error(request,"Los datos son incorrectos")
-    
-    
     form = AuthenticationForm()
     return render(request,"login.html",{"form":form})
 
+@login_required(login_url="/")
 def homePage(request):    
     context = {}
     return render(request, "bienvenido.html", context)
@@ -67,7 +65,8 @@ def listaralumno(request):
         else:
             context={'entity':alumno, 'paginator':paginator} 
         return render(request,"alumnos/listar.html", context)
-    return redirect('home')
+    else:
+        return redirect('home')
 
 @login_required(login_url="/")
 def agregaralumno(request):
@@ -111,10 +110,13 @@ def agregaralumno(request):
                                                 last_name = alumno.apellidos,
                                                 email=alumno.email, 
                                                 password=alumno.nro_matricula)
+                group = Group.objects.get(name='GrupoAlumno')
+                user.groups.add(group)
                 user.save()
                 alumno.user = user
                 alumno.estado = True
                 alumno.save()
+                messages.success(request, "Se agregó correctamente")
                 return redirect("listaralumno") 
         context={'form':form}
         return render(request, "alumnos/agregar.html", context)
@@ -132,13 +134,17 @@ def editaralumno(request,id):
         else:
             form=AlumnoForm(instance=alumno)
         context={'form':form}
+        messages.info(request, "Se editó correctamente")
         return render(request,"alumnos/editar.html",context)
     return redirect("home")
 
 @login_required(login_url="/")
 def eliminaralumno(request,id): 
     if request.user.is_staff:
-        alumno=Alumno.objects.get(id=id) 
+        alumno=Alumno.objects.get(id=id)        
+        user = alumno.user
+        user.is_active = False
+        user.save()
         alumno.estado=False 
         alumno.save()
         messages.error(request, "Eliminado correctamente")
@@ -208,11 +214,14 @@ def agregardocente(request):
                                                 last_name = docente.apellidos,
                                                 email=docente.email, 
                                                 password=docente.dni)
+                group = Group.objects.get(name='GrupoDocente')
+                user.groups.add(group)
                 user.save()
                 docente.user = user
                 docente.estado = True
                 docente.save()            
                 form.save() 
+                messages.success(request, "Se agregó correctamente")                
                 return redirect("listardocente") 
         context={'form':form}
         return render(request, "docentes/agregar.html", context)
@@ -229,7 +238,8 @@ def editardocente(request,id):
                 return redirect("listardocente") 
         else:
             form=DocenteForm(instance=docente)
-        context={'form':form}
+        context={'form':form}        
+        messages.info(request, "Se editó correctamente")
         return render(request,"docentes/editar.html",context)
     return redirect("home")
 
@@ -237,6 +247,8 @@ def editardocente(request,id):
 def eliminardocente(request,id): 
     if request.user.is_staff:
         docente=Docente.objects.get(id=id) 
+        user = docente.user
+        user.delete()
         docente.estado=False 
         docente.save()
         messages.error(request, "Eliminado correctamente")
