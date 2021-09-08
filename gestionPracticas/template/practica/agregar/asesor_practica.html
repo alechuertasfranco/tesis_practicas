@@ -1,4 +1,4 @@
-{% extends "plantilla.html" %}
+{% extends "plantilla.html" %}{% load static %}
 {% block content %}
     {% load crispy_forms_tags %}
     <div class="container">
@@ -71,38 +71,5 @@
 {% endblock%}
 
 {% block js %}
-<SCRIPT type="text/javascript">
-   function aparecer() {
-    var x = document.getElementById("info-asesor");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
-    id = document.getElementById("id_asesor").value;
-    verAsesor(id);
-}
-
-    function verAsesor(id){
-        console.log(id);
-        $.ajax({
-            url:"/verAsesor/"+id+"/",
-            type:"get",
-            dataType:"json",
-            success:function(response){
-                $('#nombre').val(response['nombres']);
-                $('#apellido').val(response['apellidos']);
-                $('#titulo').val(response['titulo']);
-                $('#telefono').val(response['telefono']);
-                $('#correo').val(response['email']);
-                $('#asesor_id').val(response['id']);
-               
-            }
-
-        });
-    }
-
-</SCRIPT>
-
-
+<script src="{% static '/js/gestionPractica/asesor.js' %}"></script>
 {% endblock js %}
