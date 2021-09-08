@@ -17,7 +17,7 @@ class PlanTesis(models.Model):
 class JuradoTesis(models.Model):
   docente = models.ForeignKey(Docente, on_delete=models.CASCADE)
   plan_tesis = models.ForeignKey(PlanTesis, on_delete=models.CASCADE)
-  descripcion = models.CharField(max_length=500)
+  descripcion = models.CharField(max_length=500, null=True)
   documento = models.FileField(upload_to="plan_tesis_observado", null=True)
   estado = models.BooleanField(default=True)
   class Meta:

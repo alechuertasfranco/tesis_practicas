@@ -6,6 +6,22 @@ window.onload = function() {
     formatFormFileInput("div_id_informe_final", "informe_final", "Informe final")
 };
 
+function create() {
+    let proyecto_tesis_input = document.getElementById("id_proyecto_tesis_input")
+    proyecto_tesis_input.innerHTML = `
+      <div class="custom-file">
+        <input type="file" name="proyecto_tesis" class="custom-file-input clearablefileinput form-control-file" id="id_proyecto_tesis" lang="es">
+        <label class="custom-file-label" for="id_proyecto_tesis">${name_doc_proyecto_tesis}</label>
+      </div>
+    `;
+
+    proyecto_tesis_input.onchange = function() {
+        let input = proyecto_tesis_input.childNodes[1];
+        let fileName = input.childNodes[1].value;
+        input.childNodes[3].innerHTML = fileName.split('fakepath\\')[1];
+    }
+}
+
 function edit() {
     let proyecto_tesis_input = document.getElementById("id_proyecto_tesis_input")
     let informe_final_input = document.getElementById("id_informe_final_input")

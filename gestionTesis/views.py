@@ -10,18 +10,24 @@ logger = logging.getLogger(__name__)
 def index_estudiante(request):
     _alumno = Alumno.objects.get(user=request.user.id)
     _plan_tesis = PlanTesis.objects.filter(alumno=_alumno.id)
-    
-    logger.warning(_alumno.id)
+    _observaciones = []
+    _form = []
     
     if _plan_tesis:
         _data = plan_tesis_edit(_alumno.id, request)
-        _form = _data['form']
-        observaciones = _data["observaciones"]
+        if type(_data) is dict:
+            _form = _data['form']
+            _observaciones = _data['observaciones']
+        else:
+            return _data
     else:
         _data = plan_tesis_create(_alumno.id, request)
-        _form = _data['form']
+        if type(_data) is dict:
+            _form = _data['form']
+        else:
+            return _data
 
-    context = {'form': _form, 'plan_tesis': _plan_tesis, 'observaciones': observaciones}
+    context = {'form': _form, 'plan_tesis': _plan_tesis, 'observaciones': _observaciones}
     return render(request, "index_estudiante.html", context)
 
 
@@ -30,7 +36,7 @@ def plan_tesis_create(alumno_id, request):
     _data = {'alumno': _alumno, 'ultima_edicion': datetime.now()}
     _form = PlanTesisFormCreate(initial=_data)
     if request.method == "POST":
-        _form = PlanTesisFormCreate(_data=request.POST, files=request.FILES)
+        _form = PlanTesisFormCreate(data=request.POST, files=request.FILES)
         if _form.is_valid():
             _form.save()
             return redirect("index_estudiante")
@@ -58,9 +64,30 @@ def index_estudiante_error(request):
     return render(request, "index_estudiante.html", context)
 
 # Vistas para jurado
-def index_jurado(request):
-    context = {}
-    return render(request, "index_jurado.html", context)
+def index_docente(request):
+    _docente = Docente.objects.get(user=request.user.id)
+    _asesorados = PlanTesis.objects.filter(asesor = _docente.id)
+    if request.method == "POST":
+        logger.warning("INDEX_DOCENTE")  
+    
+    context = {'docente': _docente, 'asesorados': _asesorados}
+    return render(request, "index_docente.html", context)
+
+def visar_plan_tesis(request, plan_id):
+    _plan_tesis = PlanTesis.objects.get(id=plan_id)
+    _form = PlanTesisFormVisar(instance=_plan_tesis)
+    
+    if request.method == "POST":
+        _plan_tesis.ultima_edicion = datetime.now()
+        _plan_tesis.estado = "VISADO"
+        _form = PlanTesisFormVisar(data=request.POST, instance=_plan_tesis, files=request.FILES)
+        if _form.is_valid():
+            _form.save()
+        return redirect("index_docente")
+    
+    context = {'form': _form, 'plan_tesis': _plan_tesis}
+    return render(request, "modal_visar.html", context)
+
 
 def asignar_jurado(request):
     _form = JuradoTesisForm() 

@@ -27,6 +27,11 @@ class PlanTesisFormEdit(ModelForm):
             'fecha_presentacion': TextInput(attrs={'type': 'date', 'readonly': 'true'}),
         }
 
+class PlanTesisFormVisar(ModelForm):
+    class Meta:
+        model = PlanTesis
+        fields = ['id', 'proyecto_tesis']
+
 class JuradoTesisForm(ModelForm):
     class Meta:
         model = JuradoTesis
