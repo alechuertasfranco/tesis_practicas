@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
     
 
     dependencies = [
-        ('gestionPracticas', '0002_remove_contacto_apellidos'),
+        ('gestionPracticas', '0001_initial'),
     ]
 
     operations = [
