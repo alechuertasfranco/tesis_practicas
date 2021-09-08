@@ -13,43 +13,43 @@
                     <div class="row">
                         <div class="col-10 form-group">
                             <label>Razón Social</label>
-                            <input type="text" class="form-control" name="razon_social" value="EMC SERVICIOS" >
+                            <input type="text" class="form-control" name="razon_social" value="{{ empresa.razon_social }}" >
                         </div>
                         <div class="col-2 form-group">
                             <label>RUC</label>
-                            <input type="text" class="form-control" name="ruc" value="20538856674">
+                            <input type="text" class="form-control" name="ruc" value="{{ empresa.ruc }}">
                         </div>
                         <div class="col-2 form-group">
                             <label>Teléfono</label>
-                            <input type="text" class="form-control" name="telefono_E" value="7386048">
+                            <input type="text" class="form-control" name="telefono_E" value="{{ empresa.telefono }}">
                         </div>
                         <div class="col-3 form-group">
                             <label>Dirección</label>
-                            <input type="text" class="form-control" name="direccion" value="CRA 4 22-33">
+                            <input type="text" class="form-control" name="direccion" value="{{ empresa.direccion }}">
                         </div>
                         <div class="col-2 form-group">
                             <label>Ciudad</label>
-                            <input type="text" class="form-control" name="ciudad" value="Trujillo">
+                            <input type="text" class="form-control" name="ciudad" value="{{ empresa.ciudad }}">
                         </div>
                         <div class="col-5 form-group">
                             <label>Nombre del Gerente</label>
-                            <input type="text" class="form-control"  name="gerente" value="Luis Antonio Sanchez Rosales">
+                            <input type="text" class="form-control"  name="gerente" value="{{ empresa.gerente }}">
                         </div>
                         <div class="col-3 form-group">
                             <label>Nombre del Jefe Inmediato</label>
-                            <input type="text" class="form-control"  name="nombres" value="ELkin Antonio Monsalve Castaño">
+                            <input type="text" class="form-control"  name="nombres" value="{{ contacto.nombres }}">
                         </div>
                         <div class="col-3 form-group">
                             <label>Cargo</label>
-                            <input type="text" class="form-control"  name="cargo" value="Gerente">
+                            <input type="text" class="form-control"  name="cargo" value="{{ contacto.cargo }}">
                         </div>
                         <div class="col-3 form-group">
                             <label>Telefono</label>
-                            <input type="text" class="form-control" name="telefono_C" value="973515536">
+                            <input type="text" class="form-control" name="telefono_C" value="{{ contacto.telefono }}">
                         </div>
                         <div class="col-3 form-group">
                             <label>Correo Electrónico</label>
-                            <input type="text" class="form-control" name="email" value="emc.servicios@hotmail.com">
+                            <input type="text" class="form-control" name="email" value="{{ contacto.email }}">
                         </div>
                     </div>
                 

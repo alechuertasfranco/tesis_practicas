@@ -1,4 +1,5 @@
 {% extends "plantilla.html" %}
+{% load static %}
 {% block practicas_link %} active {% endblock %}
 {% block practicas_item %} menu-open {% endblock %}
 {% block practicas_inicio %} active {% endblock %}
@@ -27,7 +28,11 @@
                 <div class="col-md-5 pull-right">   
                 </div>
                 <div class="col-md-1 pull-right">
-                    <a href="/agregarPractica" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i> NUEVO</a>
+                    {% if not plan_Incompleto %}
+                    <a href="/agregarPractica" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i>NUEVO</a>
+                    {% else %}
+                    <a href="/agregarPractica" class='btn btn-sm btn-warning btn-add' style="color: snow;"><i class="fas fa-exclamation-triangle" style="color: snow;"></i>INCOMPLETO</a>
+                    {% endif %}
                 </div>
             </div>
 

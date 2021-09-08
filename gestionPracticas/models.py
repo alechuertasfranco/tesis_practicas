@@ -1,5 +1,8 @@
 from typing import ClassVar
 from django.db import models
+from django.db.models import signals
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 from gestionSeguridad.models import Alumno, Docente
 # Create your models here.
 
@@ -13,7 +16,6 @@ class Empresa(models.Model):
     estado = models.CharField(max_length=10, default="Activo")  
 
 class Contacto(models.Model):
-    apellidos = models.CharField(max_length=50)
     nombres = models.CharField(max_length=50)
     cargo = models.CharField(max_length=50)
     telefono = models.CharField(max_length=9)
@@ -34,3 +36,11 @@ class PlanPracticas(models.Model):
     empresa= models.ForeignKey(Empresa, on_delete=models.CASCADE)
     contacto =  models.ForeignKey(Contacto, on_delete=models.CASCADE)
     
+    def save(self, *args, **kwargs):
+        print('save() is called.')
+        super(PlanPracticas, self).save(*args, **kwargs)
+
+@receiver(pre_save, sender=PlanPracticas)
+@receiver(post_save, sender=PlanPracticas)
+def reicever(*args, **kwargs):
+    print('signal dispatched')
