@@ -3,6 +3,7 @@ from datetime import datetime
 from gestionSeguridad.models import *
 from gestionTesis.models import *
 from gestionTesis.forms import *
+
 import logging
 import random
 logger = logging.getLogger(__name__)
