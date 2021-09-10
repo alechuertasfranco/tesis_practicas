@@ -19,6 +19,6 @@ class JuradoTesis(models.Model):
   plan_tesis = models.ForeignKey(PlanTesis, on_delete=models.CASCADE)
   descripcion = models.CharField(max_length=500, null=True)
   documento = models.FileField(upload_to="plan_tesis_observado", null=True)
-  estado = models.BooleanField(default=True)
+  estado = models.CharField(max_length=10, default="PENDIENTE")
   class Meta:
       unique_together = (("docente", "plan_tesis"),)
