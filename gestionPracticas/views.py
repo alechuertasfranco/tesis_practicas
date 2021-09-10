@@ -81,6 +81,15 @@ def save_Practica(request):
         return render(request,"practica/agregar/empresa_practica.html",context)
     return render(request,"practica/agregar/estudiante_practica.html")
 
+def save_Visado(request):
+    if request.method=="POST":
+        _plan=PlanPracticas.objects.get(id=request.POST['plan_id'])
+        _plan.plan_practicas=request.FILES['plan_practicas']
+        _plan.estado="Visado"
+        _plan.save()
+        return redirect(reverse('asesor_practica'))
+    return render(request,"practica/agregar/estudiante_practica.html")
+
 def save_Empresa(request):
     if request.method=="POST":
         razon_social=request.POST['razon_social']
@@ -124,7 +133,7 @@ def save_Asesor(request):
         ultimo_registro=PlanPracticas.objects.latest('id')
         id=ultimo_registro.id
         docente=Docente.objects.get(id = request.POST['asesor_id'])
-        PlanPracticas.objects.filter(id=id).update(asesor=docente, estado="Proceso")
+        PlanPracticas.objects.filter(id=id).update(asesor=docente, estado="PorVisar")
         return redirect(reverse('listarPractica'))
     docente=Docente.objects.filter(estado=True).distinct()
     context={'docente':docente}
@@ -141,6 +150,24 @@ def verAsesor(request,id):
     data_asesor['email']=asesor.email
     data = json.dumps(data_asesor)
     return HttpResponse(data,'application/json')
+
+def fetchAlumnoPractica(request,id):
+    alumno=Alumno.objects.get(id = id)
+    plan=PlanPracticas.objects.get(alumno =alumno)
+    data_alumno={}
+    data_alumno['id_alumno']=alumno.id
+    data_alumno['apellidos']=alumno.apellidos
+    data_alumno['nombres']=alumno.nombres
+    data_alumno['id_plan']=plan.id
+    data = json.dumps(data_alumno)
+    return HttpResponse(data,'application/json')
+
+def asesor_practica(request):
+    _usario_id=request.user.id
+    asesor=Docente.objects.get(user=_usario_id)
+    plan=PlanPracticas.objects.filter(asesor=asesor)
+    context={'planPractica':plan}
+    return render(request,"practica/asesor/asesor_practica.html",context)
 
 def Insert_Empresa(razon_social,ruc,direccion,ciudad,gerente,telefono):
     empresa=Empresa()

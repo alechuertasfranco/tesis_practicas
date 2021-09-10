@@ -1,4 +1,5 @@
 {% extends "plantilla.html" %}
+{% block page_title %} Planes de Practica {% endblock %}
 {% load static %}
 {% block practicas_link %} active {% endblock %}
 {% block practicas_item %} menu-open {% endblock %}
@@ -48,19 +49,19 @@
                     </thead>
                     <tbody>
                         {% if planPractica %}
-                        {% for itemplan in planPractica %}
-                         <tr>
-                            <th>{{ itemplan.id }}</th>
-                            <th>{{ itemplan.asesor.apellidos }} / {{ itemplan.empresa.razon_social }}</th>
-                            <th>
-                                <center> 
-                                    <a href="#"  class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Ver</a> 
-                                    <a href="" class="btn btn-info btn-sm"><i class="fas fa-download"></i>Descargar</a>
-                                </center>
-                            </th>
-                            <th>{{ itemplan.estado }}</th>
-                            {% endfor %}
-                            {% else %}
+                            {% for itemplan in planPractica %}
+                            <tr>
+                                <th>{{ itemplan.id }}</th>
+                                <th>{{ itemplan.asesor.apellidos }} / {{ itemplan.empresa.razon_social }}</th>
+                                <th>
+                                    <center> 
+                                        <a href="#"  class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Ver</a> 
+                                        <a onclick="downloadURI(this)" ruta="{{ itemplan.plan_practicas }}" url="{{ itemplan.plan_practicas.url }}" class="btn btn-info btn-sm"><i class="fas fa-download"></i>Descargar</a>
+                                    </center>
+                                </th>
+                                <th>{{ itemplan.estado }}</th>
+                                {% endfor %}
+                        {% else %}
                             <tr style="text-align: center;">
                                 <td colspan="3">
                                     <p>No hay registros</p>
@@ -76,3 +77,7 @@
         </div>
    </div>
 {% endblock %}
+{% block js %}
+<script src="{% static '/js/gestionPractica/index.js' %}"></script>
+if(%%)
+{% endblock js %}

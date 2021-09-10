@@ -17,3 +17,4 @@ id_derecho_tramite.onchange = function() {
     let fileName = input.value;
     label.innerHTML = fileName.split('fakepath\\')[1];
 }
+
