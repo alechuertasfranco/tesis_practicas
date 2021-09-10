@@ -12,12 +12,13 @@ import time
 from django.db import models
 # Create your views here.
 
+#Views para el estudiante
 def listarPractica(request):
     alumno=Alumno.objects.get(user=request.user.id)
     plan_Incompleto=PlanPracticas.objects.filter(alumno=alumno).filter(estado= 'INCOMPLETO').distinct()
     planPractica=PlanPracticas.objects.filter(alumno=alumno).exclude(estado= 'INCOMPLETO').distinct()
     context={'planPractica': planPractica,'plan_Incompleto':plan_Incompleto}
-    return render(request,"practica/index.html",context)
+    return render(request,"estudiante/index.html",context)
 
 def agregarPractica(request):
     alumno=Alumno.objects.get(user=request.user.id)
@@ -43,7 +44,7 @@ def agregarPractica(request):
         id_operacion=aux.zfill(4)    
         alumno=Alumno.objects.get(user=request.user.id)
         context={"alumno":alumno,'id_operacion':id_operacion}
-    return render(request,"practica/agregar/estudiante_practica.html",context)
+    return render(request,"estudiante/agregar/estudiante_practica.html",context)
 
 def save_Practica(request):
     if request.method=="POST":
@@ -78,17 +79,8 @@ def save_Practica(request):
         else:
             Insert_Plan(_fecha_tramite,_derecho_tramite,_plan_practicas,_alumno)
             context={}
-        return render(request,"practica/agregar/empresa_practica.html",context)
-    return render(request,"practica/agregar/estudiante_practica.html")
-
-def save_Visado(request):
-    if request.method=="POST":
-        _plan=PlanPracticas.objects.get(id=request.POST['plan_id'])
-        _plan.plan_practicas=request.FILES['plan_practicas']
-        _plan.estado="Visado"
-        _plan.save()
-        return redirect(reverse('asesor_practica'))
-    return render(request,"practica/agregar/estudiante_practica.html")
+        return render(request,"estudiante/agregar/empresa_practica.html",context)
+    return render(request,"estudiante/agregar/estudiante_practica.html")
 
 def save_Empresa(request):
     if request.method=="POST":
@@ -125,8 +117,8 @@ def save_Empresa(request):
 
         docente=Docente.objects.filter(estado=True).distinct()
         context={'docente':docente}
-        return render(request,"practica/agregar/asesor_practica.html",context)
-    return render(request,"practica/agregar/empresa_practica.html")
+        return render(request,"estudiante/agregar/asesor_practica.html",context)
+    return render(request,"estudiante/agregar/empresa_practica.html")
 
 def save_Asesor(request):
     if request.method=="POST":
@@ -137,7 +129,7 @@ def save_Asesor(request):
         return redirect(reverse('listarPractica'))
     docente=Docente.objects.filter(estado=True).distinct()
     context={'docente':docente}
-    return render(request,"practica/agregar/asesor_practica.html",context)
+    return render(request,"estudiante/agregar/asesor_practica.html",context)
         
 def verAsesor(request,id):
     asesor=Docente.objects.get(id =id)
@@ -150,24 +142,6 @@ def verAsesor(request,id):
     data_asesor['email']=asesor.email
     data = json.dumps(data_asesor)
     return HttpResponse(data,'application/json')
-
-def fetchAlumnoPractica(request,id):
-    alumno=Alumno.objects.get(id = id)
-    plan=PlanPracticas.objects.get(alumno =alumno)
-    data_alumno={}
-    data_alumno['id_alumno']=alumno.id
-    data_alumno['apellidos']=alumno.apellidos
-    data_alumno['nombres']=alumno.nombres
-    data_alumno['id_plan']=plan.id
-    data = json.dumps(data_alumno)
-    return HttpResponse(data,'application/json')
-
-def asesor_practica(request):
-    _usario_id=request.user.id
-    asesor=Docente.objects.get(user=_usario_id)
-    plan=PlanPracticas.objects.filter(asesor=asesor)
-    context={'planPractica':plan}
-    return render(request,"practica/asesor/asesor_practica.html",context)
 
 def Insert_Empresa(razon_social,ruc,direccion,ciudad,gerente,telefono):
     empresa=Empresa()
@@ -199,3 +173,53 @@ def Insert_Contacto(nombres,cargo,telefono,email,empresa):
     contacto.email=email
     contacto.empresa=empresa
     contacto.save()
+
+#Views para el asesor
+
+def asesor_practica(request):
+    _usario_id=request.user.id
+    asesor=Docente.objects.get(user=_usario_id)
+    plan=PlanPracticas.objects.filter(asesor=asesor)
+    context={'planPractica':plan}
+    return render(request,"asesor/index.html",context)
+
+def fetchAlumnoPractica(request,id):
+    alumno=Alumno.objects.get(id = id)
+    plan=PlanPracticas.objects.get(alumno =alumno)
+    data_alumno={}
+    data_alumno['id_alumno']=alumno.id
+    data_alumno['apellidos']=alumno.apellidos
+    data_alumno['nombres']=alumno.nombres
+    data_alumno['id_plan']=plan.id
+    data = json.dumps(data_alumno)
+    return HttpResponse(data,'application/json')
+
+def save_Visado(request):
+    if request.method=="POST":
+        _plan=PlanPracticas.objects.get(id=request.POST['plan_id'])
+        _plan.plan_practicas=request.FILES['plan_practicas']
+        _plan.estado="Visado"
+        _plan.save()
+        return redirect(reverse('asesor_practica'))
+    return redirect(reverse('asesor_practica'))
+
+#Views para la secretaria
+
+def secretaria_practica(request):
+    plan=PlanPracticas.objects.filter(estado="Visado")
+    context={'planPractica':plan}
+    return render(request,"secretaria/index.html",context)
+
+def perfil_alumno(request,id):
+    plan=PlanPracticas.objects.filter(estado="Visado")
+    context={'planPractica':plan}
+    return render(request,"secretaria/perfil.html",context)
+
+def save_fechaPresentacion(request):
+    if request.method=="POST":
+        _plan=PlanPracticas.objects.get(id=request.POST['plan_id'])
+        _plan.plan_practicas=request.FILES['plan_practicas']
+        _plan.estado="Visado"
+        _plan.save()
+        return redirect(reverse('asesor_practica'))
+    return redirect(reverse('asesor_practica'))
