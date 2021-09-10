@@ -9,12 +9,21 @@ from django.core.paginator import Paginator
 from .forms import AlumnoForm, DocenteForm
 from django.http import Http404
 from django.db.models import Q
+from django.contrib.auth.decorators import user_passes_test
 #EMAIL
 # import necessary packages
  
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
+
+def group_required(*group_names):
+    def in_groups(u):
+        if u.is_authenticated:
+            if bool(u.groups.filter(name__in=group_names)) | u.is_superuser:
+                return True
+        return False
+    return user_passes_test(in_groups, login_url='home')
 
 # Create your views here.
 def acceder(request):
