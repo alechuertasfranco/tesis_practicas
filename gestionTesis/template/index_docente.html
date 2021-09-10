@@ -65,7 +65,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="pl-3">{{ docente.nombres }} {{ docente.apellidos }}</h1>
+        <h1 class="pl-3">Planes de Tesis</h1>
       </div>
       <!-- /.col -->
       <div class="col-sm-6">
@@ -130,6 +130,7 @@
                 <div class="col-2">
                   <label>Estado</label>
                   <span class="btn btn-block btn-danger estado"><i class="fa fa-ban mr-2"></i>{{ plan_tesis.estado }}</span>
+                </div>
                 {% else %}
                   <button type="button" class="btn btn-block btn-info" disabled><i class="far fa-check-square mr-2"></i>Visar Plan</button>
                 </div>
@@ -159,78 +160,39 @@
           </div>
           <div class="card-body">
             <form>
+              {% for observacion in evaluados %}
               <div class="form-group form-row">
-                <div class="col-4">
+                <div class="col-5">
                   <label>Estudiante</label>
-                  <input class="form-control" type="text" disabled value="Max Alec Huertas Franco">
+                  <input class="form-control" type="text" disabled value="{{ observacion.plan_tesis.alumno }}">
                 </div> 
                 <div class="col">
                   <label>Documento</label>
-                  <button type="button" class="btn btn-block btn-info"><i class="fas fa-download mr-2"></i>Descargar documento</button>
+                  <a class="btn btn-block btn-secondary" href="/media/{{ observacion.plan_tesis.proyecto_tesis }}">
+                    <i class="fa fa-download mr-2" aria-hidden="true"></i>Descargar archivo
+                  </a>
                 </div>
                 <div class="col">
                   <label>Realizar observaciones</label>
-                  <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modalObservaciones"><i class="far fa-check-square mr-2"></i>Registrar observación</button>
-                </div>
-                <div class="col-2">
-                  <label>Aprobar proyecto</label>
-                  <button type="button" class="btn btn-block btn-success"><i class="far fa-check-circle mr-2"></i>Aprobar</button>
-                </div>
-              </div><hr/>
-              <div class="form-group form-row">
-                <div class="col-4">
-                  <label>Estudiante</label>
-                  <input class="form-control" type="text" disabled value="Arturo Javier Paulino Vigo">
-                </div> 
-                <div class="col">
-                  <label>Documento</label>
-                  <button type="button" class="btn btn-block btn-info"><i class="fas fa-download mr-2"></i>Descargar documento</button>
-                </div>
-                <div class="col">
-                  <label>Realizar observaciones</label>
-                  <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modalObservaciones"><i class="far fa-check-square mr-2"></i>Registrar observación</button>
-                </div>
-                <div class="col-2">
-                  <label>Aprobar proyecto</label>
-                  <button type="button" class="btn btn-block btn-success"><i class="far fa-check-circle mr-2"></i>Aprobar</button>
+                  {% if observacion.estado == "APROBADO" %}
+                    <button type="button" class="btn btn-block btn-info" disabled><i class="far fa-check-square mr-2"></i>Registrar observacion</button>
+                  </div>
+                  <div class="col-2">
+                    <label>Estado</label>
+                    <span class="btn btn-block btn-success estado"><i class="far fa-check-circle mr-2"></i>{{ observacion.estado }}</span>
+                  </div>
+                  {% else %}
+                    <button type="button" class="btn btn-block btn-info modal_observar" href="{% url 'observar_plan_tesis' observacion.id %}"
+                    data-popup-url="{% url 'observar_plan_tesis' observacion.id %}"><i class="far fa-check-square mr-2"></i>Registrar observacion</button>
+                  </div>
+                  <div class="col-2">
+                    <label>Estado</label>
+                    <span class="btn btn-block btn-danger estado"><i class="fa fa-ban mr-2"></i>{{ observacion.estado }}</span>
+                  </div>
+                  {% endif %}
                 </div>
               </div><hr/>
-              <div class="form-group form-row">
-                <div class="col-4">
-                  <label>Estudiante</label>
-                  <input class="form-control" type="text" disabled value="Manuel Orlando Rojas Sanchez">
-                </div> 
-                <div class="col">
-                  <label>Documento</label>
-                  <button type="button" class="btn btn-block btn-info"><i class="fas fa-download mr-2"></i>Descargar documento</button>
-                </div>
-                <div class="col">
-                  <label>Realizar observaciones</label>
-                  <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modalObservaciones"><i class="far fa-check-square mr-2"></i>Registrar observación</button>
-                </div>
-                <div class="col-2">
-                  <label>Aprobar proyecto</label>
-                  <button type="button" class="btn btn-block btn-success"><i class="far fa-check-circle mr-2"></i>Aprobar</button>
-                </div>
-              </div><hr/>
-              <div class="form-group form-row">
-                <div class="col-4">
-                  <label>Estudiante</label>
-                  <input class="form-control" type="text" disabled value="Jherson Jhanpoul Zavaleta Taucett">
-                </div> 
-                <div class="col">
-                  <label>Documento</label>
-                  <button type="button" class="btn btn-block btn-info"><i class="fas fa-download mr-2"></i>Descargar documento</button>
-                </div>
-                <div class="col">
-                  <label>Realizar observaciones</label>
-                  <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modalObservaciones"><i class="far fa-check-square mr-2"></i>Registrar observación</button>
-                </div>
-                <div class="col-2">
-                  <label>Aprobar proyecto</label>
-                  <button type="button" class="btn btn-block btn-success"><i class="far fa-check-circle mr-2"></i>Aprobar</button>
-                </div>
-              </div><hr/>
+              {% endfor %}
             </form>
           </div>
         </div>
@@ -242,38 +204,10 @@
 <!-- /.content -->
 
 <!-- Modal Observar-->
-<div class="modal fade" id="modalObservaciones" tabindex="-1" role="dialog" aria-labelledby="modalObservacionesLabel" aria-hidden="true">
+<div class="modal fade" id="modalObservar" tabindex="-1" role="dialog" aria-labelledby="modalObservarLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalObservacionesLabel">Max Alec Huertas Franco</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-row">
-          <div class="col">
-            <label for="observation1">Observación</label>
-            <textarea class="form-control" id="observation1" rows="4">{% lorem 1 b random %}</textarea>
-          </div>
-        </div>   
-        <div class="row mt-2">
-          <div class="col">
-            <label for="documento">Documento</label>
-            <div class="input-group">
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" id="documento"/>
-                <label class="custom-file-label" for="documento">Documento de tesis (Observado).pdf</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+    <div class="modal-content modal-content-observar">
+      {% include "modal_observar.html" %}
     </div>
   </div>
 </div>
@@ -282,7 +216,7 @@
 <!-- Modal Visar-->
 <div class="modal fade" id="modalVisar" tabindex="-1" role="dialog" aria-labelledby="modalVisarLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content modal-content-visar">
       {% include "modal_visar.html" %}
     </div>
   </div>
@@ -291,12 +225,6 @@
 <!-- date-range-picker -->
 <script src="{% static '/lte/plugins/daterangepicker/daterangepicker.js' %}"></script>
 <script src="{% static '/js/index_docentes.js' %}"></script>
-<script>
-  $('#Tabs a').on('click', function (event) {
-    event.preventDefault()
-    $(this).tab('show')
-  })
-</script>
 <script>
 </script>
 {% endblock js %}
