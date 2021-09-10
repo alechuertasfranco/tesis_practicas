@@ -206,7 +206,7 @@ def save_Visado(request):
 #Views para la secretaria
 
 def secretaria_practica(request):
-    plan=PlanPracticas.objects.filter(estado="Visado")
+    plan=PlanPracticas.objects.exclude(estado="PorVisar").exclude(estado="INCOMPLETO")
     context={'planPractica':plan}
     return render(request,"secretaria/index.html",context)
 
@@ -218,8 +218,8 @@ def perfil_alumno(request,id):
 def save_fechaPresentacion(request):
     if request.method=="POST":
         _plan=PlanPracticas.objects.get(id=request.POST['plan_id'])
-        _plan.plan_practicas=request.FILES['plan_practicas']
-        _plan.estado="Visado"
+        _plan.fecha_presentacion=request.POST['fecha_presentacion']
+        _plan.estado="Asignado"
         _plan.save()
-        return redirect(reverse('asesor_practica'))
-    return redirect(reverse('asesor_practica'))
+        return redirect(reverse('secretaria_practica'))
+    return redirect(reverse('secretaria_practica'))
