@@ -7,12 +7,14 @@ from gestionPracticas.models import Contacto, Empresa, PlanPracticas
 from django.db.models import Q
 from django.urls import reverse
 from django.shortcuts import redirect
+from gestionSeguridad.views import group_required
 
 import time
 from django.db import models
 # Create your views here.
 
 #Views para el estudiante
+@group_required('Alumno')
 def listarPractica(request):
     alumno=Alumno.objects.get(user=request.user.id)
     plan_Incompleto=PlanPracticas.objects.filter(alumno=alumno).filter(estado= 'INCOMPLETO').distinct()
@@ -20,6 +22,7 @@ def listarPractica(request):
     context={'planPractica': planPractica,'plan_Incompleto':plan_Incompleto}
     return render(request,"estudiante/index.html",context)
 
+@group_required('Alumno')
 def agregarPractica(request):
     alumno=Alumno.objects.get(user=request.user.id)
     operacion=PlanPracticas.objects.filter(alumno=alumno).filter(estado= 'INCOMPLETO')
@@ -46,6 +49,7 @@ def agregarPractica(request):
         context={"alumno":alumno,'id_operacion':id_operacion}
     return render(request,"estudiante/agregar/estudiante_practica.html",context)
 
+@group_required('Alumno')
 def save_Practica(request):
     if request.method=="POST":
         _fecha_tramite=request.POST['fecha_tramite']
@@ -82,6 +86,7 @@ def save_Practica(request):
         return render(request,"estudiante/agregar/empresa_practica.html",context)
     return render(request,"estudiante/agregar/estudiante_practica.html")
 
+@group_required('Alumno')
 def save_Empresa(request):
     if request.method=="POST":
         razon_social=request.POST['razon_social']
@@ -120,6 +125,7 @@ def save_Empresa(request):
         return render(request,"estudiante/agregar/asesor_practica.html",context)
     return render(request,"estudiante/agregar/empresa_practica.html")
 
+@group_required('Alumno')
 def save_Asesor(request):
     if request.method=="POST":
         ultimo_registro=PlanPracticas.objects.latest('id')
@@ -130,7 +136,8 @@ def save_Asesor(request):
     docente=Docente.objects.filter(estado=True).distinct()
     context={'docente':docente}
     return render(request,"estudiante/agregar/asesor_practica.html",context)
-        
+
+@group_required('Alumno')        
 def verAsesor(request,id):
     asesor=Docente.objects.get(id =id)
     data_asesor={}
@@ -143,6 +150,7 @@ def verAsesor(request,id):
     data = json.dumps(data_asesor)
     return HttpResponse(data,'application/json')
 
+@group_required('Alumno')
 def Insert_Empresa(razon_social,ruc,direccion,ciudad,gerente,telefono):
     empresa=Empresa()
     empresa.razon_social=razon_social
@@ -153,6 +161,7 @@ def Insert_Empresa(razon_social,ruc,direccion,ciudad,gerente,telefono):
     empresa.telefono=telefono
     empresa.save()
 
+@group_required('Alumno')
 def Insert_Plan(fecha_tramite,derecho_tramite,plan_practicas,alumno):
     plan= PlanPracticas()
     plan.fecha_tramite=fecha_tramite
@@ -165,6 +174,7 @@ def Insert_Plan(fecha_tramite,derecho_tramite,plan_practicas,alumno):
     plan.estado="INCOMPLETO"
     plan.save()
 
+@group_required('Alumno')
 def Insert_Contacto(nombres,cargo,telefono,email,empresa):
     contacto= Contacto()
     contacto.nombres=nombres
@@ -176,6 +186,7 @@ def Insert_Contacto(nombres,cargo,telefono,email,empresa):
 
 #Views para el asesor
 
+@group_required('Docente')
 def asesor_practica(request):
     _usario_id=request.user.id
     asesor=Docente.objects.get(user=_usario_id)
@@ -183,6 +194,7 @@ def asesor_practica(request):
     context={'planPractica':plan}
     return render(request,"asesor/index.html",context)
 
+@group_required('Docente')
 def fetchAlumnoPractica(request,id):
     alumno=Alumno.objects.get(id = id)
     plan=PlanPracticas.objects.get(alumno =alumno)
@@ -194,6 +206,7 @@ def fetchAlumnoPractica(request,id):
     data = json.dumps(data_alumno)
     return HttpResponse(data,'application/json')
 
+@group_required('Docente')
 def save_Visado(request):
     if request.method=="POST":
         _plan=PlanPracticas.objects.get(id=request.POST['plan_id'])
@@ -205,16 +218,19 @@ def save_Visado(request):
 
 #Views para la secretaria
 
+@group_required('Secretaria')
 def secretaria_practica(request):
     plan=PlanPracticas.objects.filter(estado="Visado")
     context={'planPractica':plan}
     return render(request,"secretaria/index.html",context)
 
+@group_required('Secretaria')
 def perfil_alumno(request,id):
     plan=PlanPracticas.objects.filter(estado="Visado")
     context={'planPractica':plan}
     return render(request,"secretaria/perfil.html",context)
 
+@group_required('Secretaria')
 def save_fechaPresentacion(request):
     if request.method=="POST":
         _plan=PlanPracticas.objects.get(id=request.POST['plan_id'])
