@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from gestionSeguridad.views import acceder,homePage,salir,listaralumno,agregaralumno,editaralumno,eliminaralumno,listardocente,agregardocente,editardocente,eliminardocente,load_escuelas
+from gestionSeguridad.views import *
 from django.contrib.auth import views
 
 urlpatterns = [

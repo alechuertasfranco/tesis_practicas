@@ -89,6 +89,6 @@ function modalPracticas() {
         text: "Debe completar el total de horas de practicas para tener acceso al plan de proyecto de tesis.",
         icon: "error",
     }).then(function() {
-        window.location.href = "/";
+        window.location.href = "/home";
     });
 }

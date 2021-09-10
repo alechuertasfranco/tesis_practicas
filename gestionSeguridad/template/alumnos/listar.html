@@ -94,18 +94,11 @@
 {% endblock %}
 
 {% block js %} 
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-{% if messages %} 
-    {% for m in messages %} 
-        <script> 
-        //console.log("{{m}}");
-        Swal.fire({ 
-            "title": "Eliminado", 
-            "text":"{{m}}", 
-            "icon":"success" }) 
-        </script> 
-    {% endfor %} 
+{% if messages %}
+  {% for message in messages %}
+  <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+  {% endfor %}
 {% endif %}
 
 <script> 
