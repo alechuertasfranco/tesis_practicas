@@ -1,3 +1,7 @@
 .custom-file-input~.custom-file-label::after {
     content: "Elegir";
 }
+
+span {
+    cursor: default!important;
+}

@@ -114,19 +114,37 @@
                 <div class="form-row">
                   <div class="col">
                     <label for="observation{{ observacion.id }}">Observación</label>
-                    <textarea class="form-control" id="observation{{ observacion.id }}" rows="3">{{ observacion.descripcion }}</textarea>
+                    {% if observacion.descripcion %}
+                      <textarea class="form-control" id="observation{{ observacion.id }}" rows="3" disabled>{{ observacion.descripcion }}</textarea>
+                    {% else %}
+                      <textarea class="form-control text-muted" id="observation{{ observacion.id }}" rows="1" disabled>Sin descripción</textarea>
+                    {% endif %}
                   </div>
                 </div>
                 <div class="row mt-2">
                   <div class="col-6">
                     <label>Estado</label>
-                    <div class="alert alert-danger">
+                    {% if observacion.estado == 'APROBADO' %}
+                    <span class="alert btn btn-block btn-success">
+                      <i class="icon fas fa-check"></i>{{ observacion.estado }}
+                    </span>
+                    {% else %}
+                    <span class="alert btn btn-block btn-danger">
                       <i class="icon fas fa-ban"></i>{{ observacion.estado }}
-                    </div>
+                    </span>
+                    {% endif %}
                   </div>
                   <div class="col-6">
                     <label>Documento</label>
-                    <button type="button" class="btn btn-block btn-info alert"><i class="fas fa-download mr-2"></i>Descargar documento observado</button>
+                    {% if observacion.documento %}
+                    <a class="btn btn-block btn-info alert" href="/media/{{ observacion.plan_tesis.proyecto_tesis }}">
+                      <i class="fa fa-download mr-2" aria-hidden="true"></i>Descargar archivo
+                    </a>
+                    {% else %}
+                    <span class="btn btn-block btn-secondary alert">
+                      <i class="fa fa-window-close mr-2"></i>Sin Archivo
+                    </span>
+                    {% endif %}
                   </div>
                 </div>
               </div><hr/>

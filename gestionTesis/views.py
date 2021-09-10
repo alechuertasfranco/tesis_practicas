@@ -3,7 +3,9 @@ from datetime import datetime
 from gestionSeguridad.models import *
 from gestionTesis.models import *
 from gestionTesis.forms import *
+
 import logging
+import random
 logger = logging.getLogger(__name__)
 
 # Vistas para estudiantes
@@ -67,10 +69,11 @@ def index_estudiante_error(request):
 def index_docente(request):
     _docente = Docente.objects.get(user=request.user.id)
     _asesorados = PlanTesis.objects.filter(asesor = _docente.id)
+    _evaluados = JuradoTesis.objects.filter(docente = _docente.id)
     if request.method == "POST":
         logger.warning("INDEX_DOCENTE")  
     
-    context = {'docente': _docente, 'asesorados': _asesorados}
+    context = {'docente': _docente, 'asesorados': _asesorados, 'evaluados':_evaluados}
     return render(request, "index_docente.html", context)
 
 def visar_plan_tesis(request, plan_id):
@@ -81,12 +84,41 @@ def visar_plan_tesis(request, plan_id):
         _plan_tesis.ultima_edicion = datetime.now()
         _plan_tesis.estado = "VISADO"
         _form = PlanTesisFormVisar(data=request.POST, instance=_plan_tesis, files=request.FILES)
+        
         if _form.is_valid():
+            asignar_jurados_aleatorios(_plan_tesis)
             _form.save()
         return redirect("index_docente")
     
     context = {'form': _form, 'plan_tesis': _plan_tesis}
     return render(request, "modal_visar.html", context)
+
+def asignar_jurados_aleatorios(_plan_tesis):
+    _pool= list(Docente.objects.all())
+    random.shuffle(_pool)
+    _jurados = _pool[:100]
+    logger.warning(_jurados)
+    
+    for _jurado in _jurados:
+        _observacion = JuradoTesis(
+            docente = _jurado,
+            plan_tesis = _plan_tesis,
+        )
+        _observacion.save()
+
+def observar_plan_tesis(request, observacion_id):
+    _observacion = JuradoTesis.objects.get(id=observacion_id)
+    _form = JuradoTesisForm(instance=_observacion)
+    
+    if request.method == "POST":
+        _form = JuradoTesisForm(data=request.POST, instance=_observacion, files=request.FILES)
+        if _form.is_valid():
+            logger.warning("IS VALID")
+            _form.save()
+        return redirect("index_docente")
+    
+    context = {'form': _form, 'observacion': _observacion}
+    return render(request, "modal_observar.html", context)
 
 
 def asignar_jurado(request):

@@ -35,7 +35,8 @@ class PlanTesisFormVisar(ModelForm):
 class JuradoTesisForm(ModelForm):
     class Meta:
         model = JuradoTesis
-        fields = ['docente', 'plan_tesis']
-        labels = {
-            'plan_tesis': 'Alumno',
+        fields = ['id', 'descripcion', 'documento', 'estado']
+        widgets = {
+            'estado': Select(choices=[('PENDIENTE','PENDIENTE'), ('APROBADO','APROBADO')]),
+            'descripcion': Textarea(attrs={'rows':4}),
         }
