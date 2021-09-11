@@ -119,7 +119,7 @@ def agregaralumno(request):
                                                 last_name = alumno.apellidos,
                                                 email=alumno.email, 
                                                 password=alumno.nro_matricula)
-                group = Group.objects.get(name='GrupoAlumno')
+                group = Group.objects.get(name='Alumno')
                 user.groups.add(group)
                 user.save()
                 alumno.user = user
@@ -223,7 +223,7 @@ def agregardocente(request):
                                                 last_name = docente.apellidos,
                                                 email=docente.email, 
                                                 password=docente.dni)
-                group = Group.objects.get(name='GrupoDocente')
+                group = Group.objects.get(name='Docente')
                 user.groups.add(group)
                 user.save()
                 docente.user = user
