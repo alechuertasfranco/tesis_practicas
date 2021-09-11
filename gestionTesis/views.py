@@ -48,7 +48,7 @@ def index_estudiante(request):
     
     return render(request, "index_estudiante.html", context)
 
-@group_required('Alumno')
+
 def plan_tesis_create(alumno_id, request):
     _alumno = Alumno.objects.get(id = alumno_id)
     _data = {'alumno': _alumno, 'ultima_edicion': datetime.now()}
@@ -61,7 +61,7 @@ def plan_tesis_create(alumno_id, request):
     else:
         return {'form': _form }
 
-@group_required('Alumno')
+
 def plan_tesis_edit(alumno_id, request):
     _plan_tesis = PlanTesis.objects.get(alumno=alumno_id)
     _form = PlanTesisFormEdit(instance=_plan_tesis)
@@ -132,30 +132,38 @@ def observar_plan_tesis(request, observacion_id):
     _form = JuradoTesisForm(instance=_observacion)
     
     if request.method == "POST":
+        # Registrar Observación
         _form = JuradoTesisForm(data=request.POST, instance=_observacion, files=request.FILES)
         if _form.is_valid():
             logger.warning("IS VALID")
             _form.save()
+            
+            # Cambiar el estado del Plan si tiene todo aprobado
+            if request.POST['estado'] == 'APROBADO':
+                _plan_tesis = PlanTesis.objects.get(id=_observacion.plan_tesis.id)
+                _estado_previo = _plan_tesis.estado
+                _plan_tesis.estado='APROBADO'
+                _observaciones = JuradoTesis.objects.filter(plan_tesis=_plan_tesis.id)
+                for item in _observaciones:
+                    if item.estado != 'APROBADO':
+                        _plan_tesis.estado = _estado_previo
+                _plan_tesis.save()
+                logger.warning(_plan_tesis.estado)
+            
         return redirect("index_docente")
     
     context = {'form': _form, 'observacion': _observacion}
     return render(request, "modal_observar.html", context)
 
-@group_required('Docente')
-def asignar_jurado(request):
-    _form = JuradoTesisForm() 
-    
-    if request.method == "POST": 
-        _form=JuradoTesisForm(request.POST)
-        if _form.is_valid(): 
-            _form.save() 
-            return redirect("listardocente")
-        
-    context = {'form':_form}
-    return render(request, "asignar_jurado.html", context)
-
 # Vistas para secretaria
 @group_required('Secretaria')
 def index_secretaria(request):
-    context = {}
+    _planes_tesis = PlanTesis.objects.filter(fecha_sustentacion=None);
+    
+    if request.method == "POST":
+        _plan_tesis = PlanTesis.objects.get(id=request.POST['id'])
+        _plan_tesis.fecha_sustentacion = request.POST['fecha_sustentacion']
+        _plan_tesis.save()
+    
+    context = {'planes_tesis': _planes_tesis}
     return render(request, "index_secretaria.html", context)
