@@ -8,57 +8,6 @@
 <link rel="stylesheet" href="{% static '/lte/plugins/daterangepicker/daterangepicker.css' %}"/>
 <link rel="stylesheet" href="{% static '/css/index_docente.css' %}"/>
 {% endblock css %}
-{% block num_messages %}2{% endblock num_messages %}
-{% block messages %}
-<!-- Messages Dropdown Menu -->
-<a href="#" class="dropdown-item">
-  <!-- Message Start -->
-  <div class="media">
-    <img src="{% static '/lte/dist/img/AdminLTELogo.png' %}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-    <div class="media-body">
-      <h3 class="dropdown-item-title">
-        Sistema
-        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-      </h3>
-      <p class="text-sm">AVISO: Fue asignado como jurado del estudiante...</p>
-      <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> Hace 1 hora</p>
-    </div>
-  </div>
-  <!-- Message End -->
-</a>
-<div class="dropdown-divider"></div>
-<!-- Messages Dropdown Menu -->
-<a href="#" class="dropdown-item">
-  <!-- Message Start -->
-  <div class="media">
-    <img src="{% static '/lte/dist/img/AdminLTELogo.png' %}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-    <div class="media-body">
-      <h3 class="dropdown-item-title">
-        Sistema
-        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-      </h3>
-      <p class="text-sm">AVISO: Fue asignado como jurado del estudiante...</p>
-      <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> Hace 30 min</p>
-    </div>
-  </div>
-  <!-- Message End -->
-</a>
-<div class="dropdown-divider"></div>
-<a href="#" class="dropdown-item dropdown-footer">Ver todos los mensajes</a>
-{% endblock messages %}
-{% block num_notifications %}2{% endblock num_notifications %}
-{% block notifications %}
-<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-  <span class="dropdown-item dropdown-header">2 Notificaciones</span>
-  <div class="dropdown-divider"></div>
-  <a href="#" class="dropdown-item">
-    <i class="fas fa-envelope mr-2"></i> 2 nuevo mensaje
-    <span class="float-right text-muted text-sm">30 min</span>
-  </a>
-  <div class="dropdown-divider"></div>
-  <a href="#" class="dropdown-item dropdown-footer">Ver todas las notificaciones</a>
-</div>
-{% endblock notifications %}
 {% block content %}
 <!-- Content Header (Page header) -->
 <div class="content-header">
@@ -174,23 +123,22 @@
                 </div>
                 <div class="col">
                   <label>Realizar observaciones</label>
-                  {% if observacion.estado == "APROBADO" %}
-                    <button type="button" class="btn btn-block btn-info" disabled><i class="far fa-check-square mr-2"></i>Registrar observacion</button>
-                  </div>
-                  <div class="col-2">
-                    <label>Estado</label>
-                    <span class="btn btn-block btn-success estado"><i class="far fa-check-circle mr-2"></i>{{ observacion.estado }}</span>
-                  </div>
-                  {% else %}
-                    <button type="button" class="btn btn-block btn-info modal_observar" href="{% url 'observar_plan_tesis' observacion.id %}"
-                    data-popup-url="{% url 'observar_plan_tesis' observacion.id %}"><i class="far fa-check-square mr-2"></i>Registrar observacion</button>
-                  </div>
-                  <div class="col-2">
-                    <label>Estado</label>
-                    <span class="btn btn-block btn-danger estado"><i class="fa fa-ban mr-2"></i>{{ observacion.estado }}</span>
-                  </div>
-                  {% endif %}
+                {% if observacion.estado == "APROBADO" %}
+                  <button type="button" class="btn btn-block btn-info" disabled><i class="far fa-check-square mr-2"></i>Registrar observacion</button>
                 </div>
+                <div class="col-2">
+                  <label>Estado</label>
+                  <span class="btn btn-block btn-success estado"><i class="far fa-check-circle mr-2"></i>{{ observacion.estado }}</span>
+                </div>
+                {% else %}
+                  <button type="button" class="btn btn-block btn-info modal_observar" href="{% url 'observar_plan_tesis' observacion.id %}"
+                  data-popup-url="{% url 'observar_plan_tesis' observacion.id %}"><i class="far fa-check-square mr-2"></i>Registrar observacion</button>
+                </div>
+                <div class="col-2">
+                  <label>Estado</label>
+                  <span class="btn btn-block btn-danger estado"><i class="fa fa-ban mr-2"></i>{{ observacion.estado }}</span>
+                </div>
+                {% endif %}
               </div><hr/>
               {% endfor %}
             </form>
