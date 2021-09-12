@@ -29,7 +29,7 @@
            <h5>{{ dia_envio }}</h5>
         <div class="card-body">
             <div class="row"> 
-                <div class="col-md-5 pull-right">   
+                <div class="col-md-11 pull-right">   
                 </div>
                 <div class="col-md-1 pull-right">
                     {% if planPractica %}
@@ -84,6 +84,7 @@
                                     <div class="boton_estado" >
                                         {% if itemplan.estado == "PorVisar" %} Por Visar {% endif %}
                                         {% if itemplan.estado == "Visado" %} Visado-En proceso  {% endif %}
+                                        {% if itemplan.estado == "Asignado" %} Proceso  {% endif %}
                                         {% if itemplan.estado == "notificado" %} Faltan {{ dias_faltantes }} dias {% endif %}
                                         {% if itemplan.estado == "Presentar" %}  {{ itemplan.estado }} {% endif %}
                                         {% if itemplan.estado == "Presentado" %}{{ itemplan.estado }} {% endif %}

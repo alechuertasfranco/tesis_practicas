@@ -23,21 +23,25 @@ from datetime import date
 @group_required('Alumno')
 def listarPractica(request):
     alumno=Alumno.objects.get(user=request.user.id)
-    plan=PlanPracticas.objects.get(alumno=alumno)
-    plan_Incompleto=PlanPracticas.objects.filter(alumno=alumno).filter(estado= 'INCOMPLETO').distinct()
-
     planPractica=PlanPracticas.objects.filter(alumno=alumno).exclude(estado= 'INCOMPLETO').distinct()
-    dia_envio=plan.fecha_presentacion - timedelta(days=3)
-    today = date.today()    
-    remaining_days = (plan.fecha_presentacion - today).days
-    dia_presentar=plan.fecha_presentacion.strftime("%B %d, %Y")
-    dia_envio=dia_envio.strftime("%B %d, %Y")
-    dia_maquina=datetime.now().strftime("%B %d, %Y")
-    if( dia_envio== dia_maquina and plan.estado!="notificado"):
-        sms_FechaPresentacion(alumno,plan)
-        PlanPracticas.objects.filter(id=plan.id).update(estado="notificado")
-    if(dia_maquina==dia_presentar and plan.estado!="Presentado" and plan.estado !="Finalizado"):
-        PlanPracticas.objects.filter(id=plan.id).update(estado="Presentar")
+    plan_Incompleto=PlanPracticas.objects.filter(alumno=alumno).filter(estado= 'INCOMPLETO').distinct()
+    remaining_days=0
+    
+    try:
+        plan=PlanPracticas.objects.get(alumno=alumno)
+        dia_envio=plan.fecha_presentacion - timedelta(days=3)
+        today = date.today()    
+        remaining_days = (plan.fecha_presentacion - today).days
+        dia_presentar=plan.fecha_presentacion.strftime("%B %d, %Y")
+        dia_envio=dia_envio.strftime("%B %d, %Y")
+        dia_maquina=datetime.now().strftime("%B %d, %Y")
+        if( dia_envio == dia_maquina and plan.estado!="notificado"):
+            sms_FechaPresentacion(alumno,plan)
+            PlanPracticas.objects.filter(id=plan.id).update(estado="notificado")
+        if(dia_maquina==dia_presentar and plan.estado!="Presentado" and plan.estado !="Finalizado"):
+            PlanPracticas.objects.filter(id=plan.id).update(estado="Presentar")
+    except:
+        print("aun no hay plan existente")
 
     context={'planPractica': planPractica,'plan_Incompleto':plan_Incompleto,"dias_faltantes":remaining_days}
     return render(request,"estudiante/index.html",context)
@@ -81,9 +85,8 @@ def save_Practica(request):
         except:
             print('no hay nada')
         
-        _alumno=Alumno.objects.get(user=request.user.id)
-
-        operacion=PlanPracticas.objects.filter(alumno=_alumno).filter(estado= 'INCOMPLETO')
+        alumno=Alumno.objects.get(user=request.user.id)
+        operacion=PlanPracticas.objects.filter(alumno=alumno).filter(estado= 'INCOMPLETO')
         context={}
         if operacion:
             if _derecho_tramite!=0 and _plan_practicas!=0:
@@ -101,7 +104,17 @@ def save_Practica(request):
             if _contacto.nombres!= 'null' and _empresa.ruc != 'null':
                 context={'contacto':_contacto,'empresa':_empresa}
         else:
-            Insert_Plan(_fecha_tramite,_derecho_tramite,_plan_practicas,_alumno)
+            plan= PlanPracticas()
+            plan.fecha_tramite=_fecha_tramite
+            plan.derecho_tramite=_derecho_tramite
+            plan.plan_practicas=_plan_practicas
+            plan.alumno= alumno
+            plan.empresa= Empresa.objects.get(id = 0)
+            docente =Docente.objects.filter(estado=True)
+            plan.asesor= docente[0]
+            plan.contacto= Contacto.objects.get(id = 0)
+            plan.estado="INCOMPLETO"
+            plan.save()
             context={}
         return render(request,"estudiante/agregar/empresa_practica.html",context)
     return render(request,"estudiante/agregar/estudiante_practica.html")
@@ -122,7 +135,15 @@ def save_Empresa(request):
         if operacion and operacion[0].empresa.id != 0:
             Empresa.objects.filter(id=operacion[0].empresa.id).update(razon_social=razon_social,ruc=ruc,direccion=direccion,ciudad=ciudad,gerente=gerente,telefono=telefono)
         else:
-            Insert_Empresa(razon_social,ruc,direccion,ciudad,gerente,telefono)    
+            empresa=Empresa()
+            empresa.razon_social=razon_social
+            empresa.ruc=ruc
+            empresa.direccion=direccion
+            empresa.ciudad=ciudad
+            empresa.gerente=gerente
+            empresa.telefono=telefono
+            empresa.save()   
+       
         time.sleep(0.05)
 
         nombres=request.POST['nombres']
@@ -134,7 +155,13 @@ def save_Empresa(request):
         if operacion and operacion[0].empresa.id != 0:
             Contacto.objects.filter(id=operacion[0].contacto.id).update(nombres=nombres,cargo=cargo,telefono=telefono,email=email,empresa=empresa)
         else:
-            Insert_Contacto(nombres,cargo,telefono,email,empresa)
+            contacto= Contacto()
+            contacto.nombres=nombres
+            contacto.cargo=cargo
+            contacto.telefono=telefono
+            contacto.email=email
+            contacto.empresa=empresa
+            contacto.save()
             time.sleep(0.05)
             ultimo_registro=PlanPracticas.objects.latest('id')
             id=ultimo_registro.id
@@ -169,40 +196,6 @@ def verAsesor(request,id):
     data_asesor['email']=asesor.email
     data = json.dumps(data_asesor)
     return HttpResponse(data,'application/json')
-
-@group_required('Alumno')
-def Insert_Empresa(razon_social,ruc,direccion,ciudad,gerente,telefono):
-    empresa=Empresa()
-    empresa.razon_social=razon_social
-    empresa.ruc=ruc
-    empresa.direccion=direccion
-    empresa.ciudad=ciudad
-    empresa.gerente=gerente
-    empresa.telefono=telefono
-    empresa.save()
-
-@group_required('Alumno')
-def Insert_Plan(fecha_tramite,derecho_tramite,plan_practicas,alumno):
-    plan= PlanPracticas()
-    plan.fecha_tramite=fecha_tramite
-    plan.derecho_tramite=derecho_tramite
-    plan.plan_practicas=plan_practicas
-    plan.alumno= alumno
-    plan.empresa= Empresa.objects.get(id = 0)
-    plan.asesor= Docente.objects.get(id = 1)
-    plan.contacto= Contacto.objects.get(id = 0)
-    plan.estado="INCOMPLETO"
-    plan.save()
-
-@group_required('Alumno')
-def Insert_Contacto(nombres,cargo,telefono,email,empresa):
-    contacto= Contacto()
-    contacto.nombres=nombres
-    contacto.cargo=cargo
-    contacto.telefono=telefono
-    contacto.email=email
-    contacto.empresa=empresa
-    contacto.save()
 
 @group_required('Alumno')
 def sms_FechaPresentacion(alumno,plan):

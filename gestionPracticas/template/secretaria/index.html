@@ -166,16 +166,14 @@
                   <div class="col-sm boton_estado" style="background-color: #FFC300;" >
                     <i class="fas fa-exclamation-circle mr-2" ></i>Por asignar</button>
                   </div>
-                  {% endif %}
-                  {% if itemplan.estado == "Presentado" %}
+                  {% elif itemplan.estado == "Presentado" %}
                   <div class="col-sm boton_estado" style="background-color: #F99D08;">
                     <i class="fas fa-exclamation-circle mr-2"></i>Culminado</button>
                   </div>
-                  {% if itemplan.estado == "Finalizado" %}
+                  {% elif itemplan.estado == "Finalizado" %}
                   <div class="col-sm boton_estado" style="background-color: #19CA4E;">
                     <i class="far fa-check-circle mr-2"></i>Finalizado</button>
                   </div>
-                  {% endif %}
                   {% else %}
                   <div class="col-sm boton_estado" style="background-color: #08B9F9;">
                     <i class="far fa-check-circle mr-2"></i>Asignado</button>
