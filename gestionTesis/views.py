@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from datetime import datetime
 from gestionSeguridad.models import *
 from gestionTesis.models import *
+from gestionPracticas.models import PlanPracticas
 from gestionTesis.forms import *
 from gestionSeguridad.views import group_required
 
@@ -13,25 +14,38 @@ logger = logging.getLogger(__name__)
 @group_required('Alumno')
 def index_estudiante(request):
     _alumno = Alumno.objects.get(user=request.user.id)
+    _planes_practicas = PlanPracticas.objects.filter(alumno=_alumno.id)
     _plan_tesis = PlanTesis.objects.filter(alumno=_alumno.id)
-    _observaciones = []
-    _form = []
+    context = {'modal': True}
     
-    if _plan_tesis:
-        _data = plan_tesis_edit(_alumno.id, request)
-        if type(_data) is dict:
-            _form = _data['form']
-            _observaciones = _data['observaciones']
+    if _planes_practicas:
+        _plan_practicas = PlanPracticas.objects.get(alumno=_alumno.id)
+        if _plan_practicas.resolucion:
+            
+            _observaciones = []
+            _form = []
+            
+            if _plan_tesis:
+                _data = plan_tesis_edit(_alumno.id, request)
+                if type(_data) is dict:
+                    _form = _data['form']
+                    _observaciones = _data['observaciones']
+                else:
+                    return _data
+            else:
+                _data = plan_tesis_create(_alumno.id, request)
+                if type(_data) is dict:
+                    _form = _data['form']
+                else:
+                    return _data
+            
+            context = {'form': _form, 'plan_tesis': _plan_tesis, 'observaciones': _observaciones}
+        
         else:
-            return _data
+            logger.warning("No hay resolucion")
     else:
-        _data = plan_tesis_create(_alumno.id, request)
-        if type(_data) is dict:
-            _form = _data['form']
-        else:
-            return _data
-
-    context = {'form': _form, 'plan_tesis': _plan_tesis, 'observaciones': _observaciones}
+        logger.warning("No hay plan")
+    
     return render(request, "index_estudiante.html", context)
 
 @group_required('Alumno')
