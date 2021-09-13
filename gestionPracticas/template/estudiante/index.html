@@ -29,19 +29,6 @@
            <h5>{{ dia_envio }}</h5>
         <div class="card-body">
             <div class="row"> 
-                <div class="col-md-6 pull-right">
-                    <form action="" method="GET" >      
-                        <div class="input-group">
-                            <input type="text" name="buscar" id="buscar" class="form-control" autofocus placeholder="Buscar" value="">
-                            <span class="input-group-btn">
-                            <button class="btn btn-primary">
-                                <i class="fa fa-search"></i>
-                            </button>
-                            </span>
-                        </div>
-                    </form>
-                    
-                </div> 
                 <div class="col-md-5 pull-right">   
                 </div>
                 <div class="col-md-1 pull-right">
@@ -53,19 +40,16 @@
                         <a href="/agregarPractica" class='btn btn-sm btn-warning btn-add' style="color: snow;"><i class="fas fa-exclamation-triangle" style="color: snow;"></i>INCOMPLETO</a>
                         {% endif %}
                     {% endif %}
-                    
                 </div>
             </div>
 
             <table class="table mt-2">
-                <table id="tablacategorias" class="table table-stripad mt-4" style="width: 100%;">
+                <table id="tablacategorias" class="table table-stripad mt-4" style="width: 100%; text-align: center;">
                     <thead class="bg-info test.white">
                         <tr>
-                            <th>Codigo</th>
-                            <th>Descripcion</th>
-                                <th>Proyecto Final</th>
+                            <th>Informacion General</th>
                             <th><center>Opciones</center></th>
-
+                            <th>Proyecto Final</th>
                             <th><center>Estado</center></th>
                         </tr>
                     </thead>
@@ -73,59 +57,47 @@
                         {% if planPractica %}
                             {% for itemplan in planPractica %}
                             <tr>
-                                <th>{{ itemplan.id }}</th>
-                                <th>{{ itemplan.asesor.apellidos }} / {{ itemplan.empresa.razon_social }}</th>
+                                <th> <button type="button" onclick="info_plan(this)" id="btninfo_plan{{ itemplan.alumno.id}}" class="btn btn-block btn-secondary" data-toggle="modal" data-target="#modalInformacion"><i class="fas fa-info-circle mr-2"></i>Ver info</button></th>
                                 <th>
-                                    <center> 
-                                        <!-- <a href="#"  class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Ver</a>  -->
-                                        <button type="button" onclick="downloadURI(this)" url="{{ itemplan.plan_practicas.url }}" ruta="{{ itemplan.plan_practicas }}" class="btn btn-block btn-info"><i class="fas fa-download mr-2"></i>Descargar Documento</button>
-                                    </center>
+                                    <div class="row">
+                                        <div class="col">
+                                            <button type="button" onclick="downloadURI(this)" url="{{ itemplan.plan_practicas.url }}" ruta="{{ itemplan.plan_practicas }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Descargar Plan</button>
+                                        </div>
+                                        {% if itemplan.estado == "Presentar" %}
+                                        <div class="col">
+                                            <button type="button" onclick="verAlumno(this)" id="btnplan{{ itemplan.alumno.id}}" class="btn btn-block btn-secondary" data-toggle="modal" data-target="#modalInforme_final"><i class="fas fa-cloud-upload-alt"></i> Informe Final</button>
+                                        </div>
+                                        {% endif %}
+                                    </div>                            
                                 </th>
-                                {% if itemplan.estado == "Presentar" %}
-                                <th>
-                                    <center> 
-                                        <!-- <a href="#"  class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Ver</a>  -->
-                                        <button type="button" onclick="verAlumno(this)" id="btnplan{{ itemplan.alumno.id}}" class="btn btn-block btn-secondary" data-toggle="modal" data-target="#modalInforme_final"><i class="far fa-check-square mr-2"></i>Subir documento</button>
-                                    </center>
-                                </th>
-                                {% else %}
-                                    <th>Sin permiso</th>
-                                {% endif %}
-                                <th> 
-                                    {% if itemplan.estado == "PorVisar" %}
-                                    <div class="boton_estado" >
-                                         Por Visar
-                                    </div>
-                                    {% endif %}
-                                    {% if itemplan.estado == "Visado" %}
-                                    <div class="boton_estado" >
-                                         Visado-Proceso
-                                    </div>
-                                    {% endif %}
-                                    {% if itemplan.estado == "notificado" %}
-                                    <div class="boton_estado" >
-                                         Faltan {{ dias_faltantes }} dias
-                                    </div>
-                                    {% endif %}
-                                    {% if itemplan.estado == "Presentar" %}
-                                    <div class="boton_estado" >
-                                         {{ itemplan.estado }}
-                                    </div>
-                                    {% endif %}
                                     {% if itemplan.estado == "Presentado" %}
-                                    <div class="boton_estado" >
-                                         {{ itemplan.estado }}
-                                    </div>
+                                    <th><button type="button" onclick="downloadURI(this)" url="{{ itemplan.plan_practicas.url }}" ruta="{{ itemplan.plan_practicas }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Descargar Informe Final</button></th>
                                     {% endif %}
-                            </th>
+                                    {% if itemplan.estado == "Finalizado" %}
+                                    <th>
+                                        <button type="button" onclick="downloadURI(this)" url="{{ itemplan.resolucion.url }}" ruta="{{ itemplan.resolucion }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Resolucion</button>
+                                    </th>
+                                    {% else %}
+                                    <th> <center>-</center></th>
+                                    {% endif %}
+                                <th> 
+                                    <div class="boton_estado" >
+                                        {% if itemplan.estado == "PorVisar" %} Por Visar {% endif %}
+                                        {% if itemplan.estado == "Visado" %} Visado-En proceso  {% endif %}
+                                        {% if itemplan.estado == "notificado" %} Faltan {{ dias_faltantes }} dias {% endif %}
+                                        {% if itemplan.estado == "Presentar" %}  {{ itemplan.estado }} {% endif %}
+                                        {% if itemplan.estado == "Presentado" %}{{ itemplan.estado }} {% endif %}
+                                        {% if itemplan.estado == "Finalizado" %}{{ itemplan.estado }} {% endif %}
+                                    </div>
+                                </th>
                                 {% endfor %}
-                        {% else %}
+                            {% else %}
                             <tr style="text-align: center;">
                                 <td colspan="3">
                                     <p>No hay registros</p>
                                 </td>
                                 </tr>
-                        {% endif %}
+                            {% endif %}
                         </tr>        
                     </tbody>
                 </table>
@@ -136,7 +108,7 @@
    </div>
 
    <!-- Modal Observar-->
-<div class="modal fade" id="modalInforme_final" tabindex="-1" role="dialog" aria-labelledby="modalInforme_finalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalInforme_final" tabindex="-1" role="dialog" aria-labelledby="modalInforme_finalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <form method="post" action="/save_informeFinal" enctype="multipart/form-data" >
         {% csrf_token %}
@@ -162,6 +134,7 @@
                  </div>
               </div>
               <div class="col">
+                  
                 <label for="documento">Documento</label>
                 <div class="input-group">
                   <input type="file" name="informe_final" class="custom-file-input clearablefileinput form-control-file" id="id_informe_final" lang="es">
@@ -177,7 +150,65 @@
       </div>
     </form>
     </div>
-  </div>
+    </div>
+
+    <div class="modal fade" id="modalInformacion" tabindex="-1" role="dialog" aria-labelledby="modalInformacionLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalInformacion_h5">Informacion General</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-row">
+          </div> 
+          <div class="row mt-2">
+            <div class="form-group col-3">
+              <label>N° Matricula</label>
+              <input type="text" class="form-control"  id="infoPlan_nro_matricula" disabled value="">
+          </div>
+          <div class="form-group col-4">
+              <label>Nombres</label>
+              <input type="text" class="form-control" id="infoPlan_nombres" disabled value="">
+          </div>
+          <div class="form-group col-5">
+              <label>Apellidos</label>
+              <input type="text" class="form-control" id="infoPlan_apellidos" disabled value="">
+          </div>
+          <div class="form-group col-8">
+              <label>Escuela</label>
+              <input type="text" class="form-control"  id="infoPlan_escuela" disabled value="">
+          </div>
+          <div class="form-group col-4">
+              <label>Semestre</label>
+              <input type="text" class="form-control"  id="infoPlan_semestre" disabled value="">
+          </div>
+            <div class="col-12 form-group">
+              <label>Empresa</label>
+              <input type="text" class="form-control" disabled  id="infoPlan_empresa" value="" >
+          </div>
+          <div class="col-7 form-group">
+            <label>Contacto</label>
+            <input type="text" class="form-control"  disabled  id="infoPlan_contacto" value="">
+          </div>
+          <div class="col-5 form-group">
+            <label>Telefono</label>
+            <input type="text" class="form-control" disabled  id="infoPlan_telefono" value="">
+          </div>
+          <div class="col-12 form-group">
+            <label>Asesor</label>
+            <input type="text" class="form-control" disabled  id="infoPlan_asesor" value="">
+          </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+    </div>
 {% endblock %}
 
 
@@ -186,3 +217,4 @@
 <script src="{% static '/js/gestionPractica/index.js' %}"></script>
 if(%%)
 {% endblock js %}
+s

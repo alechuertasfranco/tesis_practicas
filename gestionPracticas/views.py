@@ -36,7 +36,7 @@ def listarPractica(request):
     if( dia_envio== dia_maquina and plan.estado!="notificado"):
         sms_FechaPresentacion(alumno,plan)
         PlanPracticas.objects.filter(id=plan.id).update(estado="notificado")
-    if(dia_maquina==dia_presentar):
+    if(dia_maquina==dia_presentar and plan.estado!="Presentado" and plan.estado !="Finalizado"):
         PlanPracticas.objects.filter(id=plan.id).update(estado="Presentar")
 
     context={'planPractica': planPractica,'plan_Incompleto':plan_Incompleto,"dias_faltantes":remaining_days}
@@ -249,7 +249,6 @@ def asesor_practica(request):
     context={'planPractica':plan}
     return render(request,"asesor/index.html",context)
 
-#@group_required('Docente')
 def fetchAlumnoPractica(request,id):
     alumno=Alumno.objects.get(id = id)
     plan=PlanPracticas.objects.get(alumno =alumno)
@@ -260,6 +259,26 @@ def fetchAlumnoPractica(request,id):
     data_alumno['id_plan']=plan.id
     data = json.dumps(data_alumno)
     return HttpResponse(data,'application/json')
+
+def info_plan(request,id):
+    alumno=Alumno.objects.get(id = id)
+    plan=PlanPracticas.objects.get(alumno = alumno)
+    data_plan={}
+    data_plan['id_alumno']=alumno.id
+    data_plan['apellidos']=alumno.apellidos
+    data_plan['nombres']=alumno.nombres
+    data_plan['nro_matricula']=alumno.nro_matricula
+    data_plan['facultad']=alumno.facultad.descripcion
+    data_plan['escuela']=alumno.escuela.descripcion
+    data_plan['ciclo_academico']=alumno.ciclo_academico
+    data_plan['nombres_C']=plan.contacto.nombres
+    data_plan['telefono']=plan.contacto.telefono
+    data_plan['apellidos_Asesor']=plan.asesor.apellidos
+    data_plan['nombres_Asesor']=plan.asesor.nombres
+    data_plan['razon_social']=plan.empresa.razon_social
+    data = json.dumps(data_plan)
+    return HttpResponse(data,'application/json')
+   
 
 @group_required('Docente')
 def save_Visado(request):
@@ -291,6 +310,16 @@ def save_fechaPresentacion(request):
         _plan=PlanPracticas.objects.get(id=request.POST['plan_id'])
         _plan.fecha_presentacion=request.POST['fecha_presentacion']
         _plan.estado="Asignado"
+        _plan.save()
+        return redirect(reverse('secretaria_practica'))
+    return redirect(reverse('secretaria_practica'))
+
+@group_required('Secretaria')
+def save_Resolucion(request):
+    if request.method=="POST":
+        _plan=PlanPracticas.objects.get(id=request.POST['plan_id'])
+        _plan.resolucion=request.FILES['resolucion']
+        _plan.estado="Finalizado"
         _plan.save()
         return redirect(reverse('secretaria_practica'))
     return redirect(reverse('secretaria_practica'))

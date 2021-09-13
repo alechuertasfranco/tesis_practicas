@@ -28,6 +28,32 @@ function verAlumno(boton){
     });
 }
 
+function info_plan(boton){
+    let id_boton=boton.id
+    let id=id_boton.split('btninfo_plan')[1]
+    $.ajax({
+        url:"/info_plan/"+id+"/",
+        type:"get",
+        dataType:"json",
+        success:function(response){
+            $('#infoPlan_nro_matricula').val(response['nro_matricula']);
+            $('#infoPlan_nombres').val(response['nombres']);
+            $('#infoPlan_apellidos').val(response['apellidos']);
+            $('#infoPlan_escuela').val(response['escuela'].split('Escuela de ')[1]);
+            $('#infoPlan_semestre').val(response['ciclo_academico']);
+            $('#infoPlan_empresa').val(response['razon_social']);
+            $('#infoPlan_contacto').val(response['nombres_C']);
+            $('#infoPlan_telefono').val(response['telefono']);
+            $('#infoPlan_asesor').val(response['nombres_Asesor'] + " " +response['apellidos_Asesor']);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status);
+            console.log(thrownError);
+      }
+    });
+}
+
+
 let id_plan_practicas = document.getElementById("id_informe_final")
 
 id_plan_practicas.onchange = function() {
