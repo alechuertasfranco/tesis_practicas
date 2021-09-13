@@ -67,10 +67,11 @@
                         <td>{{itemdocente.email}}</td>                
                         <td style="text-align: center">
                             <a href="{% url 'editardocente' itemdocente.id %}" class="btn btn-info btn-sm m-1">
-                                <i class="fa fa-edit"></i> Editar</a>
-                                <a href="#" 
-                                onclick="eliminarDocente('{{itemdocente.id}}','{{itemdocente.apellidos}}')" class="btn btn-danger btn-sm m-1>
-                                    <i class="fa fa-trash"></i> Eliminar</a>
+                                <i class="fa fa-edit"></i> Editar
+                            </a>
+                            <a href="#" onclick="eliminarDocente('{{itemdocente.id}}','{{itemdocente.apellidos}}')" class="btn btn-danger btn-sm m-1">
+                                <i class="fa fa-trash"></i> Eliminar
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}

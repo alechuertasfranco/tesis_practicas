@@ -140,106 +140,45 @@
           </li>
           {% endif %}
           {% if 'Alumno' == request.user.groups.all.0.name %}
-          <li class="nav-item {% block estudiante_item %}{% endblock estudiante_item %}">
-            <a href="#" class="nav-link {% block estudiante_link %}{% endblock estudiante_link %}">
-              <i class="nav-icon fas fa-user-graduate"></i>
-              <p>
-                Estudiante
-                <i class="right fas fa-angle-left"></i>
-              </p>
+          <li class="nav-item">
+            <a href="/listarPractica" class="nav-link {% block practicas_inicio %}{% endblock practicas_inicio %}">
+              <i class="fas fa-briefcase nav-icon"></i>
+              <p>Plan Prácticas</p>
             </a>
-            <ul class="nav nav-treeview">
-              <!-- <li class="nav-item">
-                <a href="/tesis_estudiante_error" class="nav-link {% block estudiante_error %}{% endblock estudiante_error %}">
-                  <i class="fas fa-ban nav-icon"></i>
-                  <p>Inicio denegado</p>
-                </a>
-              </li> -->
-              <li class="nav-item">
-                <a href="/tesis_estudiante" class="nav-link {% block estudiante %}{% endblock estudiante %}">
-                  <i class="fas fa-microscope nav-icon"></i>
-                  <p>Plan Tesis</p>
-                </a>
-              </li>              
-              <li class="nav-item">
-                <a href="/listarPractica" class="nav-link {% block practicas_inicio %}{% endblock practicas_inicio %}">
-                  <i class="fas fa-briefcase nav-icon"></i>
-                  <p>Plan Prácticas</p>
-                </a>
-              </li>
-            </ul>
           </li>
+          <li class="nav-item">
+            <a href="/tesis_estudiante" class="nav-link {% block estudiante %}{% endblock estudiante %}">
+              <i class="fas fa-microscope nav-icon"></i>
+              <p>Plan Tesis</p>
+            </a>
+          </li>              
           {% endif %}
           {% if 'Docente' == request.user.groups.all.0.name %}
-          <li class="nav-item {% block jurado_item %}{% endblock jurado_item %}">
-            <a href="#" class="nav-link {% block jurado_link %}{% endblock jurado_link %}">
-              <i class="nav-icon fas fa-chalkboard-teacher"></i>
-              <p>
-                Sección tesis
-                <i class="right fas fa-angle-left"></i>
-              </p>
+          <li class="nav-item">
+            <a href="/asesor_practica" class="nav-link {% block practicas_asesor_inicio %}{% endblock practicas_asesor_inicio %}">
+              <i class="fas fa-briefcase nav-icon"></i>
+              <p>Planes de Practicas</p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/tesis_docente" class="nav-link {% block jurado_inicio %}{% endblock jurado_inicio %}">
-                  <i class="fas fa-tasks nav-icon"></i>
-                  <p>Inicio</p>
-                </a>
-              </li>
-            </ul>
           </li>
-          <li class="nav-item {% block practicas_asesor_item %}{% endblock practicas_asesor_item %}">
-            <a href="#" class="nav-link {% block practicas_asesor_link %}{% endblock practicas_asesor_link %}">
-              <i class="fas fa-chalkboard-teacher"></i>
-              <p>
-                Sección Prácticas
-                <i class="right fas fa-angle-left"></i>
-              </p>
+          <li class="nav-item">
+            <a href="/tesis_docente" class="nav-link {% block jurado_inicio %}{% endblock jurado_inicio %}">
+              <i class="fas fa-microscope nav-icon"></i>
+              <p>Planes de Tesis</p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/asesor_practica" class="nav-link {% block practicas_asesor_inicio %}{% endblock practicas_asesor_inicio %}">
-                  <i class="fas fa-tasks nav-icon"></i>
-                  <p>Inicio</p>
-                </a>
-              </li>
-            </ul>
-          </li> 
+          </li>
           {% endif %}         
           {% if 'Secretaria' == request.user.groups.all.0.name %}
-          <li class="nav-item {% block secretaria_item %}{% endblock secretaria_item %}">
-            <a href="#" class="nav-link {% block secretaria_link %}{% endblock secretaria_link %}">
-              <i class="nav-icon fas fa-fax"></i>
-              <p>
-                Secretaria
-                <i class="right fas fa-angle-left"></i>
-              </p>
+          <li class="nav-item">
+            <a href="/secretaria_practica" class="nav-link {% block practicas_secretaria_inicio %}{% endblock practicas_secretaria_inicio %}">
+              <i class="fas fa-briefcase nav-icon"></i>
+              <p>Planes de Practicas</p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/tesis_secretaria" class="nav-link {% block secretaria_inicio %}{% endblock secretaria_inicio %}">
-                  <i class="fas fa-tasks nav-icon"></i>
-                  <p>Inicio</p>
-                </a>
-              </li>
-            </ul>
           </li>
-          <li class="nav-item {% block practicas_secretaria_item %}{% endblock practicas_secretaria_item %}">
-            <a href="#" class="nav-link {% block practicas_secretaria_link %}{% endblock practicas_secretaria_link %}">
-              <i class="nav-icon fas fa-fax"></i>
-              <p>
-                Secretaria Practicas
-                <i class="right fas fa-angle-left"></i>
-              </p>
+          <li class="nav-item">
+            <a href="/tesis_secretaria" class="nav-link {% block secretaria_inicio %}{% endblock secretaria_inicio %}">
+              <i class="fas fa-microscope nav-icon"></i>
+              <p>Planes de Tesis</p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/secretaria_practica" class="nav-link {% block practicas_secretaria_inicio %}{% endblock practicas_secretaria_inicio %}">
-                  <i class="fas fa-tasks nav-icon"></i>
-                  <p>Inicio</p>
-                </a>
-              </li>
-            </ul>
           </li>
           {% endif %} 
           <li class="nav-item">
