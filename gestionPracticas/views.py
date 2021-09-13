@@ -8,18 +8,38 @@ from django.db.models import Q
 from django.urls import reverse
 from django.shortcuts import redirect
 from gestionSeguridad.views import group_required
-
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 import time
+from datetime import timedelta
 from django.db import models
+from email.utils import formatdate
+from datetime import datetime
+from datetime import date
 # Create your views here.
 
 #Views para el estudiante
 @group_required('Alumno')
 def listarPractica(request):
     alumno=Alumno.objects.get(user=request.user.id)
+    plan=PlanPracticas.objects.get(alumno=alumno)
     plan_Incompleto=PlanPracticas.objects.filter(alumno=alumno).filter(estado= 'INCOMPLETO').distinct()
+
     planPractica=PlanPracticas.objects.filter(alumno=alumno).exclude(estado= 'INCOMPLETO').distinct()
-    context={'planPractica': planPractica,'plan_Incompleto':plan_Incompleto}
+    dia_envio=plan.fecha_presentacion - timedelta(days=3)
+    today = date.today()    
+    remaining_days = (plan.fecha_presentacion - today).days
+    dia_presentar=plan.fecha_presentacion.strftime("%B %d, %Y")
+    dia_envio=dia_envio.strftime("%B %d, %Y")
+    dia_maquina=datetime.now().strftime("%B %d, %Y")
+    if( dia_envio== dia_maquina and plan.estado!="notificado"):
+        sms_FechaPresentacion(alumno,plan)
+        PlanPracticas.objects.filter(id=plan.id).update(estado="notificado")
+    if(dia_maquina==dia_presentar):
+        PlanPracticas.objects.filter(id=plan.id).update(estado="Presentar")
+
+    context={'planPractica': planPractica,'plan_Incompleto':plan_Incompleto,"dias_faltantes":remaining_days}
     return render(request,"estudiante/index.html",context)
 
 @group_required('Alumno')
@@ -184,6 +204,41 @@ def Insert_Contacto(nombres,cargo,telefono,email,empresa):
     contacto.empresa=empresa
     contacto.save()
 
+@group_required('Alumno')
+def sms_FechaPresentacion(alumno,plan):
+    #MSG
+    msg = MIMEMultipart()
+    message = "La fecha de presentacion asignada para el dia "+ str(plan.fecha_presentacion) + " esta pronta a cumplirse "
+    # setup the parameters of the message
+    password = "5BGUr&OhNi"
+    msg['From'] = "apracticastesis@gmail.com"
+    msg['To'] = alumno.email
+    msg['Subject'] = "Aviso de Presentacion de Plan de Tesis"
+    msg["Date"] = formatdate(localtime=True)
+
+    # add in the message body
+    msg.attach(MIMEText(message, 'plain'))
+    #create server
+    server = smtplib.SMTP('smtp.gmail.com: 587')
+    server.starttls()
+    # Login Credentials for sending the mail
+    server.login(msg['From'], password)
+    # send the message via the server.
+    server.sendmail(msg['From'], msg['To'], msg.as_string())
+    server.quit()
+    print ("successfully sent email to %s:" % (msg['To']))
+
+@group_required('Alumno')
+def save_informeFinal(request):
+    if request.method=="POST":
+        
+        _plan=PlanPracticas.objects.get(id=request.POST['plan_id'])
+        _plan.informe_final=request.FILES['informe_final']
+        _plan.save()
+        PlanPracticas.objects.filter(id=request.POST['plan_id']).update(estado="Presentado")
+        return redirect(reverse('listarPractica'))
+    return redirect(reverse('listarPractica'))
+
 #Views para el asesor
 
 @group_required('Docente')
@@ -194,7 +249,7 @@ def asesor_practica(request):
     context={'planPractica':plan}
     return render(request,"asesor/index.html",context)
 
-@group_required('Docente')
+#@group_required('Docente')
 def fetchAlumnoPractica(request,id):
     alumno=Alumno.objects.get(id = id)
     plan=PlanPracticas.objects.get(alumno =alumno)

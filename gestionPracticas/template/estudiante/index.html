@@ -5,12 +5,28 @@
 {% block estudiante_item %} menu-open {% endblock %}
 {% block practicas_inicio %} active {% endblock %}
 {% load crispy_forms_tags %} 
+{% block css %}
+<!-- daterange picker -->
+
+<style type="text/css">
+    .boton_estado {
+        border-radius: 5px; 
+        color: black;
+        height: 54%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+                  }
+</style>
+
+{% endblock css %}
 {% block content %}
    <div class="container">
        <div class="car card-outline card-info mt-3">
            <div class="card-header">
                <h1 class="card-title">ESTADO DE PRACTICA</h1>
            </div>
+           <h5>{{ dia_envio }}</h5>
         <div class="card-body">
             <div class="row"> 
                 <div class="col-md-6 pull-right">
@@ -29,11 +45,15 @@
                 <div class="col-md-5 pull-right">   
                 </div>
                 <div class="col-md-1 pull-right">
-                    {% if not plan_Incompleto %}
-                    <a href="/agregarPractica" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i>NUEVO</a>
+                    {% if planPractica %}
                     {% else %}
-                    <a href="/agregarPractica" class='btn btn-sm btn-warning btn-add' style="color: snow;"><i class="fas fa-exclamation-triangle" style="color: snow;"></i>INCOMPLETO</a>
+                        {% if not plan_Incompleto %}
+                        <a href="/agregarPractica" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i>NUEVO</a>
+                        {% else %}
+                        <a href="/agregarPractica" class='btn btn-sm btn-warning btn-add' style="color: snow;"><i class="fas fa-exclamation-triangle" style="color: snow;"></i>INCOMPLETO</a>
+                        {% endif %}
                     {% endif %}
+                    
                 </div>
             </div>
 
@@ -43,8 +63,10 @@
                         <tr>
                             <th>Codigo</th>
                             <th>Descripcion</th>
+                                <th>Proyecto Final</th>
                             <th><center>Opciones</center></th>
-                            <th>Estado</th>
+
+                            <th><center>Estado</center></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,11 +77,47 @@
                                 <th>{{ itemplan.asesor.apellidos }} / {{ itemplan.empresa.razon_social }}</th>
                                 <th>
                                     <center> 
-                                        <a href="#"  class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Ver</a> 
-                                        <a onclick="downloadURI(this)" ruta="{{ itemplan.plan_practicas }}" url="{{ itemplan.plan_practicas.url }}" class="btn btn-info btn-sm"><i class="fas fa-download"></i>Descargar</a>
+                                        <!-- <a href="#"  class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Ver</a>  -->
+                                        <button type="button" onclick="downloadURI(this)" url="{{ itemplan.plan_practicas.url }}" ruta="{{ itemplan.plan_practicas }}" class="btn btn-block btn-info"><i class="fas fa-download mr-2"></i>Descargar Documento</button>
                                     </center>
                                 </th>
-                                <th>{{ itemplan.estado }}</th>
+                                {% if itemplan.estado == "Presentar" %}
+                                <th>
+                                    <center> 
+                                        <!-- <a href="#"  class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Ver</a>  -->
+                                        <button type="button" onclick="verAlumno(this)" id="btnplan{{ itemplan.alumno.id}}" class="btn btn-block btn-secondary" data-toggle="modal" data-target="#modalInforme_final"><i class="far fa-check-square mr-2"></i>Subir documento</button>
+                                    </center>
+                                </th>
+                                {% else %}
+                                    <th>Sin permiso</th>
+                                {% endif %}
+                                <th> 
+                                    {% if itemplan.estado == "PorVisar" %}
+                                    <div class="boton_estado" >
+                                         Por Visar
+                                    </div>
+                                    {% endif %}
+                                    {% if itemplan.estado == "Visado" %}
+                                    <div class="boton_estado" >
+                                         Visado-Proceso
+                                    </div>
+                                    {% endif %}
+                                    {% if itemplan.estado == "notificado" %}
+                                    <div class="boton_estado" >
+                                         Faltan {{ dias_faltantes }} dias
+                                    </div>
+                                    {% endif %}
+                                    {% if itemplan.estado == "Presentar" %}
+                                    <div class="boton_estado" >
+                                         {{ itemplan.estado }}
+                                    </div>
+                                    {% endif %}
+                                    {% if itemplan.estado == "Presentado" %}
+                                    <div class="boton_estado" >
+                                         {{ itemplan.estado }}
+                                    </div>
+                                    {% endif %}
+                            </th>
                                 {% endfor %}
                         {% else %}
                             <tr style="text-align: center;">
@@ -76,7 +134,54 @@
 
         </div>
    </div>
+
+   <!-- Modal Observar-->
+<div class="modal fade" id="modalInforme_final" tabindex="-1" role="dialog" aria-labelledby="modalInforme_finalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form method="post" action="/save_informeFinal" enctype="multipart/form-data" >
+        {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalInforme_final_h5"> Subir Informe Final de Plan de Practica </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-row">
+          </div> 
+          <div class="row mt-2">
+              <div class="input-group" style="display: none;">
+                <div class="custom-file">
+                  <input type="text" class=""  id="alumno_id" name="alumno_id" value="">
+                 </div>
+              </div>
+              <div class="input-group" style="display: none;">
+                <div class="custom-file">
+                  <input type="text" class=""  id="plan_id" name="plan_id" value="">
+                 </div>
+              </div>
+              <div class="col">
+                <label for="documento">Documento</label>
+                <div class="input-group">
+                  <input type="file" name="informe_final" class="custom-file-input clearablefileinput form-control-file" id="id_informe_final" lang="es">
+                  <label class="custom-file-label" for="id_informe_final" id="id_informe_final_label"></label>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input class='btn  btn-success btn-add' type="submit" value="Guardar">
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
 {% endblock %}
+
+
+
 {% block js %}
 <script src="{% static '/js/gestionPractica/index.js' %}"></script>
 if(%%)
