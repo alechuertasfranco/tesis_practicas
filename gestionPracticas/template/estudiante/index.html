@@ -21,195 +21,191 @@
 
 {% endblock css %}
 {% block content %}
-   <div class="container">
-       <div class="car card-outline card-info mt-3">
-           <div class="card-header">
-               <h1 class="card-title">ESTADO DE PRACTICA</h1>
-           </div>
-           <h5>{{ dia_envio }}</h5>
-        <div class="card-body">
-            <div class="row"> 
-                <div class="col-md-11 pull-right">   
-                </div>
-                <div class="col-md-1 pull-right">
-                    {% if planPractica %}
-                    {% else %}
-                        {% if not plan_Incompleto %}
-                        <a href="/agregarPractica" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus'></i>NUEVO</a>
-                        {% else %}
-                        <a href="/agregarPractica" class='btn btn-sm btn-warning btn-add' style="color: snow;"><i class="fas fa-exclamation-triangle" style="color: snow;"></i>INCOMPLETO</a>
-                        {% endif %}
-                    {% endif %}
-                </div>
+<div class="container">
+    <div class="car card-outline card-info mt-3">
+        <div class="card-header">
+          <div class="row"> 
+            <div class="col">   
+              <h1 class="card-title">ESTADO DE PRACTICA</h1>
             </div>
-
-            <table class="table mt-2">
-                <table id="tablacategorias" class="table table-stripad mt-4" style="width: 100%; text-align: center;">
-                    <thead class="bg-info test.white">
+            <div class="col-2 text-right">
+                {% if planPractica %}
+                {% else %}
+                    {% if not plan_Incompleto %}
+                    <a href="/agregarPractica" class='btn btn-sm btn-primary btn-add'><i class='fas fa-plus mr-2'></i>NUEVO</a>
+                    {% else %}
+                    <a href="/agregarPractica" class='btn btn-sm btn-warning btn-add' style="color: snow;"><i class="fas fa-exclamation-triangle" style="color: snow;"></i>INCOMPLETO</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <h5>{{ dia_envio }}</h5>
+          </div>
+        </div>
+        <div class="card-body">
+            <table id="tablacategorias" class="table table-stripad mt-2" style="width: 100%; text-align: center;">
+                <thead class="bg-info test.white">
+                    <tr>
+                        <th>Informacion General</th>
+                        <th><center>Opciones</center></th>
+                        <th>Proyecto Final</th>
+                        <th><center>Estado</center></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if planPractica %}
+                        {% for itemplan in planPractica %}
                         <tr>
-                            <th>Informacion General</th>
-                            <th><center>Opciones</center></th>
-                            <th>Proyecto Final</th>
-                            <th><center>Estado</center></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if planPractica %}
-                            {% for itemplan in planPractica %}
-                            <tr>
-                                <th> <button type="button" onclick="info_plan(this)" id="btninfo_plan{{ itemplan.alumno.id}}" class="btn btn-block btn-secondary" data-toggle="modal" data-target="#modalInformacion"><i class="fas fa-info-circle mr-2"></i>Ver info</button></th>
-                                <th>
-                                    <div class="row">
-                                        <div class="col">
-                                            <button type="button" onclick="downloadURI(this)" url="{{ itemplan.plan_practicas.url }}" ruta="{{ itemplan.plan_practicas }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Descargar Plan</button>
-                                        </div>
-                                        {% if itemplan.estado == "Presentar" %}
-                                        <div class="col">
-                                            <button type="button" onclick="verAlumno(this)" id="btnplan{{ itemplan.alumno.id}}" class="btn btn-block btn-secondary" data-toggle="modal" data-target="#modalInforme_final"><i class="fas fa-cloud-upload-alt"></i> Informe Final</button>
-                                        </div>
-                                        {% endif %}
-                                    </div>                            
-                                </th>
-                                    {% if itemplan.estado == "Presentado" %}
-                                    <th><button type="button" onclick="downloadURI(this)" url="{{ itemplan.plan_practicas.url }}" ruta="{{ itemplan.plan_practicas }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Descargar Informe Final</button></th>
-                                    {% endif %}
-                                    {% if itemplan.estado == "Finalizado" %}
-                                    <th>
-                                        <button type="button" onclick="downloadURI(this)" url="{{ itemplan.resolucion.url }}" ruta="{{ itemplan.resolucion }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Resolucion</button>
-                                    </th>
-                                    {% else %}
-                                    <th> <center>-</center></th>
-                                    {% endif %}
-                                <th> 
-                                    <div class="boton_estado" >
-                                        {% if itemplan.estado == "PorVisar" %} Por Visar {% endif %}
-                                        {% if itemplan.estado == "Visado" %} Visado-En proceso  {% endif %}
-                                        {% if itemplan.estado == "Asignado" %} Proceso  {% endif %}
-                                        {% if itemplan.estado == "notificado" %} Faltan {{ dias_faltantes }} dias {% endif %}
-                                        {% if itemplan.estado == "Presentar" %}  {{ itemplan.estado }} {% endif %}
-                                        {% if itemplan.estado == "Presentado" %}{{ itemplan.estado }} {% endif %}
-                                        {% if itemplan.estado == "Finalizado" %}{{ itemplan.estado }} {% endif %}
+                            <th> <button type="button" onclick="info_plan(this)" id="btninfo_plan{{ itemplan.alumno.id}}" class="btn btn-block btn-secondary" data-toggle="modal" data-target="#modalInformacion"><i class="fas fa-info-circle mr-2"></i>Ver info</button></th>
+                            <th>
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="button" onclick="downloadURI(this)" url="{{ itemplan.plan_practicas.url }}" ruta="{{ itemplan.plan_practicas }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Descargar Plan</button>
                                     </div>
+                                    {% if itemplan.estado == "Presentar" %}
+                                    <div class="col">
+                                        <button type="button" onclick="verAlumno(this)" id="btnplan{{ itemplan.alumno.id}}" class="btn btn-block btn-secondary" data-toggle="modal" data-target="#modalInforme_final"><i class="fas fa-cloud-upload-alt"></i> Informe Final</button>
+                                    </div>
+                                    {% endif %}
+                                </div>                            
+                            </th>
+                                {% if itemplan.estado == "Presentado" %}
+                                <th><button type="button" onclick="downloadURI(this)" url="{{ itemplan.plan_practicas.url }}" ruta="{{ itemplan.plan_practicas }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Descargar Informe Final</button></th>
+                                {% endif %}
+                                {% if itemplan.estado == "Finalizado" %}
+                                <th>
+                                    <button type="button" onclick="downloadURI(this)" url="{{ itemplan.resolucion.url }}" ruta="{{ itemplan.resolucion }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Resolucion</button>
                                 </th>
-                                {% endfor %}
-                            {% else %}
-                            <tr style="text-align: center;">
-                                <td colspan="3">
-                                    <p>No hay registros</p>
-                                </td>
-                                </tr>
-                            {% endif %}
-                        </tr>        
-                    </tbody>
-                </table>
+                                {% else %}
+                                <th> <center>-</center></th>
+                                {% endif %}
+                            <th> 
+                                <div class="boton_estado" >
+                                    {% if itemplan.estado == "PorVisar" %} Por Visar {% endif %}
+                                    {% if itemplan.estado == "Visado" %} Visado-En proceso  {% endif %}
+                                    {% if itemplan.estado == "Asignado" %} Proceso  {% endif %}
+                                    {% if itemplan.estado == "notificado" %} Faltan {{ dias_faltantes }} dias {% endif %}
+                                    {% if itemplan.estado == "Presentar" %}  {{ itemplan.estado }} {% endif %}
+                                    {% if itemplan.estado == "Presentado" %}{{ itemplan.estado }} {% endif %}
+                                    {% if itemplan.estado == "Finalizado" %}{{ itemplan.estado }} {% endif %}
+                                </div>
+                            </th>
+                            {% endfor %}
+                        {% else %}
+                        <tr style="text-align: center;">
+                            <td colspan="3">
+                                <p>No hay registros</p>
+                            </td>
+                            </tr>
+                        {% endif %}
+                    </tr>        
+                </tbody>
             </table>
         </div>
-
-        </div>
-   </div>
-
-   <!-- Modal Observar-->
-    <div class="modal fade" id="modalInforme_final" tabindex="-1" role="dialog" aria-labelledby="modalInforme_finalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <form method="post" action="/save_informeFinal" enctype="multipart/form-data" >
-        {% csrf_token %}
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalInforme_final_h5"> Subir Informe Final de Plan de Practica </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="form-row">
-          </div> 
-          <div class="row mt-2">
-              <div class="input-group" style="display: none;">
-                <div class="custom-file">
-                  <input type="text" class=""  id="alumno_id" name="alumno_id" value="">
-                 </div>
-              </div>
-              <div class="input-group" style="display: none;">
-                <div class="custom-file">
-                  <input type="text" class=""  id="plan_id" name="plan_id" value="">
-                 </div>
-              </div>
-              <div class="col">
-                  
-                <label for="documento">Documento</label>
-                <div class="input-group">
-                  <input type="file" name="informe_final" class="custom-file-input clearablefileinput form-control-file" id="id_informe_final" lang="es">
-                  <label class="custom-file-label" for="id_informe_final" id="id_informe_final_label"></label>
-                </div>
-              </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <input class='btn  btn-success btn-add' type="submit" value="Guardar">
-        </div>
-      </div>
-    </form>
     </div>
-    </div>
+</div>
 
-    <div class="modal fade" id="modalInformacion" tabindex="-1" role="dialog" aria-labelledby="modalInformacionLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalInformacion_h5">Informacion General</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="form-row">
-          </div> 
-          <div class="row mt-2">
-            <div class="form-group col-3">
-              <label>N° Matricula</label>
-              <input type="text" class="form-control"  id="infoPlan_nro_matricula" disabled value="">
+<!-- Modal Observar-->
+<div class="modal fade" id="modalInforme_final" tabindex="-1" role="dialog" aria-labelledby="modalInforme_finalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <form method="post" action="/save_informeFinal" enctype="multipart/form-data" >
+    {% csrf_token %}
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalInforme_final_h5"> Subir Informe Final de Plan de Practica </h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+      </div> 
+      <div class="row mt-2">
+          <div class="input-group" style="display: none;">
+            <div class="custom-file">
+              <input type="text" class=""  id="alumno_id" name="alumno_id" value="">
+              </div>
           </div>
-          <div class="form-group col-4">
-              <label>Nombres</label>
-              <input type="text" class="form-control" id="infoPlan_nombres" disabled value="">
+          <div class="input-group" style="display: none;">
+            <div class="custom-file">
+              <input type="text" class=""  id="plan_id" name="plan_id" value="">
+              </div>
           </div>
-          <div class="form-group col-5">
-              <label>Apellidos</label>
-              <input type="text" class="form-control" id="infoPlan_apellidos" disabled value="">
+          <div class="col">
+              
+            <label for="documento">Documento</label>
+            <div class="input-group">
+              <input type="file" name="informe_final" class="custom-file-input clearablefileinput form-control-file" id="id_informe_final" lang="es">
+              <label class="custom-file-label" for="id_informe_final" id="id_informe_final_label"></label>
+            </div>
           </div>
-          <div class="form-group col-8">
-              <label>Escuela</label>
-              <input type="text" class="form-control"  id="infoPlan_escuela" disabled value="">
-          </div>
-          <div class="form-group col-4">
-              <label>Semestre</label>
-              <input type="text" class="form-control"  id="infoPlan_semestre" disabled value="">
-          </div>
-            <div class="col-12 form-group">
-              <label>Empresa</label>
-              <input type="text" class="form-control" disabled  id="infoPlan_empresa" value="" >
-          </div>
-          <div class="col-7 form-group">
-            <label>Contacto</label>
-            <input type="text" class="form-control"  disabled  id="infoPlan_contacto" value="">
-          </div>
-          <div class="col-5 form-group">
-            <label>Telefono</label>
-            <input type="text" class="form-control" disabled  id="infoPlan_telefono" value="">
-          </div>
-          <div class="col-12 form-group">
-            <label>Asesor</label>
-            <input type="text" class="form-control" disabled  id="infoPlan_asesor" value="">
-          </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        </div>
       </div>
     </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <input class='btn  btn-success btn-add' type="submit" value="Guardar">
     </div>
+  </div>
+</form>
+</div>
+</div>
+
+<div class="modal fade" id="modalInformacion" tabindex="-1" role="dialog" aria-labelledby="modalInformacionLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalInformacion_h5">Informacion General</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+      </div> 
+      <div class="row mt-2">
+        <div class="form-group col-3">
+          <label>N° Matricula</label>
+          <input type="text" class="form-control"  id="infoPlan_nro_matricula" disabled value="">
+      </div>
+      <div class="form-group col-4">
+          <label>Nombres</label>
+          <input type="text" class="form-control" id="infoPlan_nombres" disabled value="">
+      </div>
+      <div class="form-group col-5">
+          <label>Apellidos</label>
+          <input type="text" class="form-control" id="infoPlan_apellidos" disabled value="">
+      </div>
+      <div class="form-group col-8">
+          <label>Escuela</label>
+          <input type="text" class="form-control"  id="infoPlan_escuela" disabled value="">
+      </div>
+      <div class="form-group col-4">
+          <label>Semestre</label>
+          <input type="text" class="form-control"  id="infoPlan_semestre" disabled value="">
+      </div>
+        <div class="col-12 form-group">
+          <label>Empresa</label>
+          <input type="text" class="form-control" disabled  id="infoPlan_empresa" value="" >
+      </div>
+      <div class="col-7 form-group">
+        <label>Contacto</label>
+        <input type="text" class="form-control"  disabled  id="infoPlan_contacto" value="">
+      </div>
+      <div class="col-5 form-group">
+        <label>Telefono</label>
+        <input type="text" class="form-control" disabled  id="infoPlan_telefono" value="">
+      </div>
+      <div class="col-12 form-group">
+        <label>Asesor</label>
+        <input type="text" class="form-control" disabled  id="infoPlan_asesor" value="">
+      </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+</div>
+</div>
 {% endblock %}
 
 
