@@ -1,6 +1,6 @@
 from django import forms 
 from django.forms import fields
-from .models import Alumno, Docente, Facultad, Escuela, User
+from .models import Alumno, Docente
 
 class AlumnoForm(forms.ModelForm):  
     class Meta:
