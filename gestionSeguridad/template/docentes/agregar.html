@@ -4,14 +4,14 @@
 <div class="container">
     <div class="card card-info mx-4 my-4">
         <div class="card-header">
-            <h1 class="card-title">Agregar alumno</h1>
+            <h1 class="card-title">Agregar docente</h1>
         </div>
         <div class="card-body">
             <form method="post" enctype="multipart/form-data"> 
                 {% csrf_token %} 
                 {{ form | crispy}} 
                 <div class="d-flex justify-content-end"> 
-                    <a href="{% url 'listaralumno' %}" class="btn btn-secondary">Cancelar</a>
+                    <a href="{% url 'listardocente' %}" class="btn btn-secondary">Cancelar</a>
                     &nbsp; 
                     <button type="submit" class="btn btn-primary">Guardar</button> 
                 </div>

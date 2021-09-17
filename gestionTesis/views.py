@@ -68,7 +68,7 @@ def index_estudiante(request):
 
 def plan_tesis_create(alumno_id, request):
     _alumno = Alumno.objects.get(id = alumno_id)
-    _data = {'alumno': _alumno, 'ultima_edicion': datetime.now()}
+    _data = {'alumno': _alumno, 'ultima_edicion': datetime.datetime.now()}
     _form = PlanTesisFormCreate(initial=_data)
     if request.method == "POST":
         _form = PlanTesisFormCreate(data=request.POST, files=request.FILES)
@@ -89,7 +89,7 @@ def plan_tesis_edit(alumno_id, request):
     
     _observaciones = JuradoTesis.objects.filter(plan_tesis=_plan_tesis.id)
     if request.method == "POST":
-        _plan_tesis.ultima_edicion = datetime.now()
+        _plan_tesis.ultima_edicion = datetime.datetime.now()
         _form = PlanTesisFormEdit(data=request.POST, instance=_plan_tesis, files=request.FILES)
         if _form.is_valid():
             _form.save()
