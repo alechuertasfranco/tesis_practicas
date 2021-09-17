@@ -66,11 +66,13 @@
                                         <button type="button" onclick="verAlumno(this)" id="btnplan{{ itemplan.alumno.id}}" class="btn btn-block btn-secondary" data-toggle="modal" data-target="#modalInforme_final"><i class="fas fa-cloud-upload-alt"></i> Informe Final</button>
                                     </div>
                                     {% endif %}
+                                    {% if itemplan.estado == "Presentado" %}
+                                    <div class="col">
+                                      <button type="button" onclick="downloadURI(this)" url="{{ itemplan.plan_practicas.url }}" ruta="{{ itemplan.plan_practicas }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Descargar Informe Final</button>
+                                    </div>
+                                    {% endif %}
                                 </div>                            
                             </th>
-                                {% if itemplan.estado == "Presentado" %}
-                                <th><button type="button" onclick="downloadURI(this)" url="{{ itemplan.plan_practicas.url }}" ruta="{{ itemplan.plan_practicas }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Descargar Informe Final</button></th>
-                                {% endif %}
                                 {% if itemplan.estado == "Finalizado" %}
                                 <th>
                                     <button type="button" onclick="downloadURI(this)" url="{{ itemplan.resolucion.url }}" ruta="{{ itemplan.resolucion }}" class="btn btn-block btn-primary"><i class="fas fa-download mr-2"></i>Resolucion</button>

@@ -15,8 +15,9 @@ import time
 from datetime import timedelta
 from django.db import models
 from email.utils import formatdate
-from datetime import datetime
 from datetime import date
+import datetime
+
 # Create your views here.
 
 #Views para el estudiante
@@ -25,20 +26,16 @@ def listarPractica(request):
     alumno=Alumno.objects.get(user=request.user.id)
     planPractica=PlanPracticas.objects.filter(alumno=alumno).exclude(estado= 'INCOMPLETO').distinct()
     plan_Incompleto=PlanPracticas.objects.filter(alumno=alumno).filter(estado= 'INCOMPLETO').distinct()
-    remaining_days=0
-    
+    remaining_days = 0
+    today_f = date.today()    
     try:
         plan=PlanPracticas.objects.get(alumno=alumno)
-        dia_envio=plan.fecha_presentacion - timedelta(days=3)
-        today = date.today()    
-        remaining_days = (plan.fecha_presentacion - today).days
-        dia_presentar=plan.fecha_presentacion.strftime("%B %d, %Y")
-        dia_envio=dia_envio.strftime("%B %d, %Y")
-        dia_maquina=datetime.now().strftime("%B %d, %Y")
-        if( dia_envio == dia_maquina and plan.estado!="notificado"):
+        today = datetime.date.today() 
+        remaining_days = (plan.fecha_presentacion - today_f).days
+        if (today > (plan.fecha_presentacion - datetime.timedelta(days=3)) and plan.estado !="notificado" and plan.fecha_presentacion  > today):
             sms_FechaPresentacion(alumno,plan)
             PlanPracticas.objects.filter(id=plan.id).update(estado="notificado")
-        if(dia_maquina==dia_presentar and plan.estado!="Presentado" and plan.estado !="Finalizado"):
+        if(today == plan.fecha_presentacion and plan.estado!="Presentado" and plan.estado !="Finalizado"):
             PlanPracticas.objects.filter(id=plan.id).update(estado="Presentar")
     except:
         print("aun no hay plan existente")
